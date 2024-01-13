@@ -1,6 +1,11 @@
-public class ConcretePiece implements Piece{
+public abstract class ConcretePiece implements Piece{
     private static ConcretePlayer owner;
     private static String type;
+
+    public ConcretePiece(ConcretePlayer owner, String type) {
+        this.owner = owner;
+        this.type = type;
+    }
 
     @Override
     public ConcretePlayer getOwner(){
