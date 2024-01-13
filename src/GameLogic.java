@@ -3,7 +3,7 @@ public class GameLogic implements PlayableLogic {
     public static ConcretePiece[][] GameBoard;
     private ConcretePlayer Defender;
     private ConcretePlayer Attacker;
-    public static boolean Turn;
+    public static boolean Turn = false;
 
     ConcretePiece[][] resetBoard = new ConcretePiece[11][11];
 
@@ -19,6 +19,10 @@ public class GameLogic implements PlayableLogic {
         }
         GameBoard[b.getX()][b.getY()] = GameBoard[a.getX()][a.getY()];
         GameBoard[a.getX()][a.getY()] = null;
+        
+        this.Turn = !this.Turn;
+
+
         return true;
     }
 
