@@ -1,4 +1,4 @@
-public class Pawn extends ConcretePiece {
+public class Pawn extends ConcretePiece{
 
 
     private int piecesAte = 0;
@@ -6,7 +6,6 @@ public class Pawn extends ConcretePiece {
     public Pawn(ConcretePlayer owner, String type) {
         super(owner, type);
     }
-    
 
     public int getPiecesAte() {
         return piecesAte;

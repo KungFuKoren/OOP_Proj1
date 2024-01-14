@@ -27,9 +27,6 @@ public class GameLogic implements PlayableLogic {
         }
         GameBoard[b.getX()][b.getY()] = GameBoard[a.getX()][a.getY()];
         GameBoard[a.getX()][a.getY()] = null;
-
-        this.Turn = !this.Turn;
-
         return true;
     }
 
