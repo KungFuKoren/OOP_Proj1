@@ -77,7 +77,7 @@ public class GameLogic implements PlayableLogic {
         return true;
     }
 
-    private static void eat(Position a) {
+    private void eat(Position a) {
         int aX = a.getX(), aY = a.getY();
         ArrayList<Position> neighbours = new ArrayList<>();
         if (aY == 0) {
@@ -114,6 +114,13 @@ public class GameLogic implements PlayableLogic {
             neighbours.add(new Position(aX - 1, aY - 1));
             neighbours.add(new Position(aX, aY - 1));
             neighbours.add(new Position(aX + 1, aY - 1));
+        }
+        for (int i = 0; i < neighbours.size(); i++) {
+            if (this.getPieceAtPosition(neighbours.get(i)).getOwner().isPlayerOne()) {
+
+
+                // Turns = false -> player 2 turn
+            }
         }
     }
 
