@@ -1,9 +1,12 @@
+import java.util.ArrayList;
+
 public class GameLogic implements PlayableLogic {
 
     public static ConcretePiece[][] GameBoard;
     private ConcretePlayer Player1; //Defender
     private ConcretePlayer Player2; //Attacker
     public boolean Turn;
+    public ArrayList<ConcretePiece[][]> gamePlay;
 
     public GameLogic() {
         this.Player1 = new ConcretePlayer(true);
@@ -16,17 +19,25 @@ public class GameLogic implements PlayableLogic {
     public boolean move(Position a, Position b) {
         if (this.getPieceAtPosition(a) == null || this.getPieceAtPosition(b) != null)
             return false; // check if chosen square isn't empty and destination is clear
-        if ((this.Turn && this.getPieceAtPosition(a).getOwner().isPlayerOne() == this.Player2.isPlayerOne()) || (!this.Turn && this.getPieceAtPosition(a).getOwner().isPlayerOne() == this.Player1.isPlayerOne())) {
+        if ((!this.Turn && this.getPieceAtPosition(a).getOwner().isPlayerOne() == this.Player2.isPlayerOne()) || (this.Turn && this.getPieceAtPosition(a).getOwner().isPlayerOne() == this.Player1.isPlayerOne())) {
             return false; // if turn = false its Player2s turn same vice versa
+        }
+
+        int aX = a.getX(), aY = a.getY(), bX = b.getX(), bY = b.getY();
+
+        if ((bX == 0 && bY == 0) || (bX == 10 && bY == 0) || (bX == 0 && bY == 10) || (bX == 10 && bY == 10) && (!this.getPieceAtPosition(b).getType().equals("♔"))) {
+            return false;
         }
 
         if (!isPathClear(a, b)) {
             return false;
         }
 
-        GameBoard[b.getX()][b.getY()] = GameBoard[a.getX()][a.getY()];
-        GameBoard[a.getX()][a.getY()] = null;
+        GameBoard[bX][bY] = GameBoard[aX][aY];
+        GameBoard[aX][aY] = null;
 
+        if (!this.getPieceAtPosition(b).getType().equals("♔")) eat(b);
+        
         this.Turn = !this.Turn;
 
         return true;
@@ -66,6 +77,10 @@ public class GameLogic implements PlayableLogic {
         return true;
     }
 
+    private static void eat(Position a) {
+        ArrayList<Position> neighbours = new ArrayList<>();
+//        if(a.getY() == 0 && a.getX() == 10) neighbours.add()
+    }
 
     @Override
     public Piece getPieceAtPosition(Position position) {
@@ -88,6 +103,7 @@ public class GameLogic implements PlayableLogic {
 
     @Override
     public boolean isGameFinished() {
+
         return false;
     }
 
@@ -99,6 +115,10 @@ public class GameLogic implements PlayableLogic {
     @Override
     public void reset() {
         setBoard();
+        ArrayList<ConcretePiece[][]> newGame = new ArrayList<ConcretePiece[][]>();
+        this.gamePlay = newGame;
+        gamePlay.add(GameBoard);
+        this.Turn = true;
         // Player2.isPlayerOne()
 
 
@@ -141,6 +161,7 @@ public class GameLogic implements PlayableLogic {
         Pawn aPawn22 = new Pawn(this.Player2);
         Pawn aPawn23 = new Pawn(this.Player2);
         Pawn aPawn24 = new Pawn(this.Player2);
+        Pawn aPawn25 = new Pawn(this.Player2);
         Pawn dPawn1 = new Pawn(this.Player1);
         Pawn dPawn2 = new Pawn(this.Player1);
         Pawn dPawn3 = new Pawn(this.Player1);
@@ -178,8 +199,9 @@ public class GameLogic implements PlayableLogic {
         Board[4][10] = aPawn20;
         Board[5][10] = aPawn21;
         Board[6][10] = aPawn22;
-        Board[7][0] = aPawn23;
-        Board[5][9] = aPawn24;
+        Board[7][10] = aPawn23;
+        Board[7][0] = aPawn24;
+        Board[5][9] = aPawn25;
 
         Board[5][3] = dPawn1;
         Board[4][4] = dPawn2;
