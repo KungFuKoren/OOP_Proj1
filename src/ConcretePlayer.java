@@ -16,11 +16,3 @@ public class ConcretePlayer implements Player {
         return this.numOfWins;
     }
 }
-
-//public void setPlayer1() {
-//    this.isPlayer1 = true;
-//}
-
-//public void setPlayer2() {
-//    this.isPlayer1 = false;
-//}

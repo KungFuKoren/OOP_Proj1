@@ -3,10 +3,7 @@ public class GameLogic implements PlayableLogic {
     public static ConcretePiece[][] GameBoard;
     private ConcretePlayer Defender;
     private ConcretePlayer Attacker;
-    public static boolean Turn = false;
-
-    ConcretePiece[][] resetBoard = new ConcretePiece[11][11];
-
+    public boolean Turn;
 
     public GameLogic() {
         ConcretePlayer player1 = new ConcretePlayer(true);
@@ -15,15 +12,17 @@ public class GameLogic implements PlayableLogic {
         this.Defender = player2;
         this.Turn = false;
         reset();
-
     }
 
     @Override
     public boolean move(Position a, Position b) {
+        System.out.println("a = " + a.getX() + ", " + a.getY());
+        System.out.println("b = " + b.getX() + ", " + b.getY());
+        System.out.println(this.getPieceAtPosition(a).getOwner());
         if (this.getPieceAtPosition(a) == null || this.getPieceAtPosition(b) != null)
             return false; // check if chosen square isn't empty and destination is clear
         if ((this.Turn && this.getPieceAtPosition(a).getOwner().isPlayerOne() == this.Attacker.isPlayerOne()) || (!this.Turn && this.getPieceAtPosition(a).getOwner().isPlayerOne() == this.Defender.isPlayerOne())) {
-            return false; //if turn = false its attackers turn same vice versa
+            return false; // if turn = false its attackers turn same vice versa
         }
         if (!isPathClear(a, b)) {
             return false;
@@ -120,43 +119,43 @@ public class GameLogic implements PlayableLogic {
     public void setBoard() {
         ConcretePiece[][] Board = new ConcretePiece[11][11];
 
-        Pawn aPawn1 = new Pawn(Attacker, "pawn");
-        Pawn aPawn2 = new Pawn(Attacker, "pawn");
-        Pawn aPawn3 = new Pawn(Attacker, "pawn");
-        Pawn aPawn4 = new Pawn(Attacker, "pawn");
-        Pawn aPawn5 = new Pawn(Attacker, "pawn");
-        Pawn aPawn6 = new Pawn(Attacker, "pawn");
-        Pawn aPawn7 = new Pawn(Attacker, "pawn");
-        Pawn aPawn8 = new Pawn(Attacker, "pawn");
-        Pawn aPawn9 = new Pawn(Attacker, "pawn");
-        Pawn aPawn10 = new Pawn(Attacker, "pawn");
-        Pawn aPawn11 = new Pawn(Attacker, "pawn");
-        Pawn aPawn12 = new Pawn(Attacker, "pawn");
-        Pawn aPawn13 = new Pawn(Attacker, "pawn");
-        Pawn aPawn14 = new Pawn(Attacker, "pawn");
-        Pawn aPawn15 = new Pawn(Attacker, "pawn");
-        Pawn aPawn16 = new Pawn(Attacker, "pawn");
-        Pawn aPawn17 = new Pawn(Attacker, "pawn");
-        Pawn aPawn18 = new Pawn(Attacker, "pawn");
-        Pawn aPawn19 = new Pawn(Attacker, "pawn");
-        Pawn aPawn20 = new Pawn(Attacker, "pawn");
-        Pawn aPawn21 = new Pawn(Attacker, "pawn");
-        Pawn aPawn22 = new Pawn(Attacker, "pawn");
-        Pawn aPawn23 = new Pawn(Attacker, "pawn");
-        Pawn aPawn24 = new Pawn(Attacker, "pawn");
-        Pawn dPawn1 = new Pawn(Defender, "pawn");
-        Pawn dPawn2 = new Pawn(Defender, "pawn");
-        Pawn dPawn3 = new Pawn(Defender, "pawn");
-        Pawn dPawn4 = new Pawn(Defender, "pawn");
-        Pawn dPawn5 = new Pawn(Defender, "pawn");
-        Pawn dPawn6 = new Pawn(Defender, "pawn");
-        Pawn dPawn7 = new Pawn(Defender, "pawn");
-        Pawn dPawn8 = new Pawn(Defender, "pawn");
-        Pawn dPawn9 = new Pawn(Defender, "pawn");
-        Pawn dPawn10 = new Pawn(Defender, "pawn");
-        Pawn dPawn11 = new Pawn(Defender, "pawn");
-        Pawn dPawn12 = new Pawn(Defender, "pawn");
-        King dKing = new King(Defender, "king");
+        Pawn aPawn1 = new Pawn(this.Attacker, "pawn");
+        Pawn aPawn2 = new Pawn(this.Attacker, "pawn");
+        Pawn aPawn3 = new Pawn(this.Attacker, "pawn");
+        Pawn aPawn4 = new Pawn(this.Attacker, "pawn");
+        Pawn aPawn5 = new Pawn(this.Attacker, "pawn");
+        Pawn aPawn6 = new Pawn(this.Attacker, "pawn");
+        Pawn aPawn7 = new Pawn(this.Attacker, "pawn");
+        Pawn aPawn8 = new Pawn(this.Attacker, "pawn");
+        Pawn aPawn9 = new Pawn(this.Attacker, "pawn");
+        Pawn aPawn10 = new Pawn(this.Attacker, "pawn");
+        Pawn aPawn11 = new Pawn(this.Attacker, "pawn");
+        Pawn aPawn12 = new Pawn(this.Attacker, "pawn");
+        Pawn aPawn13 = new Pawn(this.Attacker, "pawn");
+        Pawn aPawn14 = new Pawn(this.Attacker, "pawn");
+        Pawn aPawn15 = new Pawn(this.Attacker, "pawn");
+        Pawn aPawn16 = new Pawn(this.Attacker, "pawn");
+        Pawn aPawn17 = new Pawn(this.Attacker, "pawn");
+        Pawn aPawn18 = new Pawn(this.Attacker, "pawn");
+        Pawn aPawn19 = new Pawn(this.Attacker, "pawn");
+        Pawn aPawn20 = new Pawn(this.Attacker, "pawn");
+        Pawn aPawn21 = new Pawn(this.Attacker, "pawn");
+        Pawn aPawn22 = new Pawn(this.Attacker, "pawn");
+        Pawn aPawn23 = new Pawn(this.Attacker, "pawn");
+        Pawn aPawn24 = new Pawn(this.Attacker, "pawn");
+        Pawn dPawn1 = new Pawn(this.Defender, "pawn");
+        Pawn dPawn2 = new Pawn(this.Defender, "pawn");
+        Pawn dPawn3 = new Pawn(this.Defender, "pawn");
+        Pawn dPawn4 = new Pawn(this.Defender, "pawn");
+        Pawn dPawn5 = new Pawn(this.Defender, "pawn");
+        Pawn dPawn6 = new Pawn(this.Defender, "pawn");
+        Pawn dPawn7 = new Pawn(this.Defender, "pawn");
+        Pawn dPawn8 = new Pawn(this.Defender, "pawn");
+        Pawn dPawn9 = new Pawn(this.Defender, "pawn");
+        Pawn dPawn10 = new Pawn(this.Defender, "pawn");
+        Pawn dPawn11 = new Pawn(this.Defender, "pawn");
+        Pawn dPawn12 = new Pawn(this.Defender, "pawn");
+        King dKing = new King(this.Defender, "king");
 
 
         Board[3][0] = aPawn1;
@@ -199,7 +198,6 @@ public class GameLogic implements PlayableLogic {
         Board[5][5] = dKing;
 
         this.GameBoard = Board;
-
 
     }
 }
