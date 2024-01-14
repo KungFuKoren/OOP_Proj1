@@ -6,10 +6,8 @@ public class GameLogic implements PlayableLogic {
     public boolean Turn;
 
     public GameLogic() {
-        ConcretePlayer player1 = new ConcretePlayer(true);
-        ConcretePlayer player2 = new ConcretePlayer(false);
-        this.Attacker = player1;
-        this.Defender = player2;
+        this.Attacker = new ConcretePlayer(false);
+        this.Defender = new ConcretePlayer(true);
         this.Turn = false;
         reset();
     }
@@ -18,7 +16,7 @@ public class GameLogic implements PlayableLogic {
     public boolean move(Position a, Position b) {
         System.out.println("a = " + a.getX() + ", " + a.getY());
         System.out.println("b = " + b.getX() + ", " + b.getY());
-        System.out.println(this.getPieceAtPosition(a).getOwner());
+//        System.out.println(this.getPieceAtPosition(a).getType().equals("pawn"));
         if (this.getPieceAtPosition(a) == null || this.getPieceAtPosition(b) != null)
             return false; // check if chosen square isn't empty and destination is clear
         if ((this.Turn && this.getPieceAtPosition(a).getOwner().isPlayerOne() == this.Attacker.isPlayerOne()) || (!this.Turn && this.getPieceAtPosition(a).getOwner().isPlayerOne() == this.Defender.isPlayerOne())) {
@@ -119,43 +117,43 @@ public class GameLogic implements PlayableLogic {
     public void setBoard() {
         ConcretePiece[][] Board = new ConcretePiece[11][11];
 
-        Pawn aPawn1 = new Pawn(this.Attacker, "pawn");
-        Pawn aPawn2 = new Pawn(this.Attacker, "pawn");
-        Pawn aPawn3 = new Pawn(this.Attacker, "pawn");
-        Pawn aPawn4 = new Pawn(this.Attacker, "pawn");
-        Pawn aPawn5 = new Pawn(this.Attacker, "pawn");
-        Pawn aPawn6 = new Pawn(this.Attacker, "pawn");
-        Pawn aPawn7 = new Pawn(this.Attacker, "pawn");
-        Pawn aPawn8 = new Pawn(this.Attacker, "pawn");
-        Pawn aPawn9 = new Pawn(this.Attacker, "pawn");
-        Pawn aPawn10 = new Pawn(this.Attacker, "pawn");
-        Pawn aPawn11 = new Pawn(this.Attacker, "pawn");
-        Pawn aPawn12 = new Pawn(this.Attacker, "pawn");
-        Pawn aPawn13 = new Pawn(this.Attacker, "pawn");
-        Pawn aPawn14 = new Pawn(this.Attacker, "pawn");
-        Pawn aPawn15 = new Pawn(this.Attacker, "pawn");
-        Pawn aPawn16 = new Pawn(this.Attacker, "pawn");
-        Pawn aPawn17 = new Pawn(this.Attacker, "pawn");
-        Pawn aPawn18 = new Pawn(this.Attacker, "pawn");
-        Pawn aPawn19 = new Pawn(this.Attacker, "pawn");
-        Pawn aPawn20 = new Pawn(this.Attacker, "pawn");
-        Pawn aPawn21 = new Pawn(this.Attacker, "pawn");
-        Pawn aPawn22 = new Pawn(this.Attacker, "pawn");
-        Pawn aPawn23 = new Pawn(this.Attacker, "pawn");
-        Pawn aPawn24 = new Pawn(this.Attacker, "pawn");
-        Pawn dPawn1 = new Pawn(this.Defender, "pawn");
-        Pawn dPawn2 = new Pawn(this.Defender, "pawn");
-        Pawn dPawn3 = new Pawn(this.Defender, "pawn");
-        Pawn dPawn4 = new Pawn(this.Defender, "pawn");
-        Pawn dPawn5 = new Pawn(this.Defender, "pawn");
-        Pawn dPawn6 = new Pawn(this.Defender, "pawn");
-        Pawn dPawn7 = new Pawn(this.Defender, "pawn");
-        Pawn dPawn8 = new Pawn(this.Defender, "pawn");
-        Pawn dPawn9 = new Pawn(this.Defender, "pawn");
-        Pawn dPawn10 = new Pawn(this.Defender, "pawn");
-        Pawn dPawn11 = new Pawn(this.Defender, "pawn");
-        Pawn dPawn12 = new Pawn(this.Defender, "pawn");
-        King dKing = new King(this.Defender, "king");
+        Pawn aPawn1 = new Pawn(this.Attacker, "♟");
+        Pawn aPawn2 = new Pawn(this.Attacker, "♟");
+        Pawn aPawn3 = new Pawn(this.Attacker, "♟");
+        Pawn aPawn4 = new Pawn(this.Attacker, "♟");
+        Pawn aPawn5 = new Pawn(this.Attacker, "♟");
+        Pawn aPawn6 = new Pawn(this.Attacker, "♟");
+        Pawn aPawn7 = new Pawn(this.Attacker, "♟");
+        Pawn aPawn8 = new Pawn(this.Attacker, "♟");
+        Pawn aPawn9 = new Pawn(this.Attacker, "♟");
+        Pawn aPawn10 = new Pawn(this.Attacker, "♟");
+        Pawn aPawn11 = new Pawn(this.Attacker, "♟");
+        Pawn aPawn12 = new Pawn(this.Attacker, "♟");
+        Pawn aPawn13 = new Pawn(this.Attacker, "♟");
+        Pawn aPawn14 = new Pawn(this.Attacker, "♟");
+        Pawn aPawn15 = new Pawn(this.Attacker, "♟");
+        Pawn aPawn16 = new Pawn(this.Attacker, "♟");
+        Pawn aPawn17 = new Pawn(this.Attacker, "♟");
+        Pawn aPawn18 = new Pawn(this.Attacker, "♟");
+        Pawn aPawn19 = new Pawn(this.Attacker, "♟");
+        Pawn aPawn20 = new Pawn(this.Attacker, "♟");
+        Pawn aPawn21 = new Pawn(this.Attacker, "♟");
+        Pawn aPawn22 = new Pawn(this.Attacker, "♟");
+        Pawn aPawn23 = new Pawn(this.Attacker, "♟");
+        Pawn aPawn24 = new Pawn(this.Attacker, "♟");
+        Pawn dPawn1 = new Pawn(this.Defender, "♙");
+        Pawn dPawn2 = new Pawn(this.Defender, "♙");
+        Pawn dPawn3 = new Pawn(this.Defender, "♙");
+        Pawn dPawn4 = new Pawn(this.Defender, "♙");
+        Pawn dPawn5 = new Pawn(this.Defender, "♙");
+        Pawn dPawn6 = new Pawn(this.Defender, "♙");
+        Pawn dPawn7 = new Pawn(this.Defender, "♙");
+        Pawn dPawn8 = new Pawn(this.Defender, "♙");
+        Pawn dPawn9 = new Pawn(this.Defender, "♙");
+        Pawn dPawn10 = new Pawn(this.Defender, "♙");
+        Pawn dPawn11 = new Pawn(this.Defender, "♙");
+        Pawn dPawn12 = new Pawn(this.Defender, "♙");
+        King dKing = new King(this.Defender, "♔");
 
 
         Board[3][0] = aPawn1;

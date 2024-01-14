@@ -65,7 +65,8 @@ public class GUI_for_chess_like_games extends JFrame {
 
     /**
      * This function is called when two different buttons are pressed, one after the other.
-     * @param srcPosition The source piece position
+     *
+     * @param srcPosition  The source piece position
      * @param destPosition The destination piece position
      */
     private void twoButtonsListener(Position srcPosition, Position destPosition) {
@@ -83,7 +84,7 @@ public class GUI_for_chess_like_games extends JFrame {
     /**
      * Updates the game board UI to reflect the current state of the game.
      * It updates the turn label, the button text, and the text color based on the current game state.
-     *
+     * <p>
      * If it's the attacker's turn, the turn label will display "Attacker's Turn", otherwise "Defender's Turn".
      * For each cell on the board, the button's appearance and text will be updated to match the corresponding
      * piece's position and type. The text color is determined by the piece's owner.
@@ -117,6 +118,7 @@ public class GUI_for_chess_like_games extends JFrame {
         }
         updateWinsLabels(gameLogic.getSecondPlayer().getWins(), gameLogic.getFirstPlayer().getWins());
     }
+
     private void updateWinsLabels(int attackerWins, int defenderWins) {
         playerTowWinsLabel.setText("♟ Player 2 Wins: " + attackerWins);
         playerOneWinsLabel.setText("♙ Player 1 Wins: " + defenderWins);
@@ -138,13 +140,12 @@ public class GUI_for_chess_like_games extends JFrame {
 
                 // Set alternating background colors for a chessboard pattern
                 if ((row + col) % 2 != 0) {
-                    buttons[row][col].setBackground(new Color(184,134,11));
-                }
-                else  {
+                    buttons[row][col].setBackground(new Color(184, 134, 11));
+                } else {
                     buttons[row][col].setBackground(Color.WHITE);
                 }
-                if (row % (BOARD_SIZE - 1)  == 0 && col % (BOARD_SIZE - 1) == 0) {
-                    buttons[row][col].setBackground(new Color(189,183,107));
+                if (row % (BOARD_SIZE - 1) == 0 && col % (BOARD_SIZE - 1) == 0) {
+                    buttons[row][col].setBackground(new Color(189, 183, 107));
                 }
 
                 // Clear default border and content area
@@ -165,7 +166,7 @@ public class GUI_for_chess_like_games extends JFrame {
                 mainPanel.add(buttons[row][col]);
                 buttons[row][col].putClientProperty("row", row); // Store the row index
                 buttons[row][col].putClientProperty("col", col); // Store the column index
-                buttons[row][col].addActionListener((e)-> {
+                buttons[row][col].addActionListener((e) -> {
                     JButton clickedButton = (JButton) e.getSource();
 
                     if (selectedButton == null) {
@@ -208,6 +209,7 @@ public class GUI_for_chess_like_games extends JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
     }
+
     private void resetGame() {
         gameLogic.reset();
 
