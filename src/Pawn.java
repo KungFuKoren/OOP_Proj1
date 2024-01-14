@@ -1,10 +1,10 @@
-public class Pawn extends ConcretePiece{
+public class Pawn extends ConcretePiece {
 
 
     private int piecesAte = 0;
 
-    public Pawn(ConcretePlayer owner, String type) {
-        super(owner, type);
+    public Pawn(ConcretePlayer owner) {
+        super(owner, owner.isPlayerOne() ? "♙" : "♟");
     }
 
     public int getPiecesAte() {

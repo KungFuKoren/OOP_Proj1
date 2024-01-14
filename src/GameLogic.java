@@ -1,32 +1,34 @@
 public class GameLogic implements PlayableLogic {
 
     public static ConcretePiece[][] GameBoard;
-    private ConcretePlayer Defender;
-    private ConcretePlayer Attacker;
+    private ConcretePlayer Player1; //Defender
+    private ConcretePlayer Player2; //Attacker
     public boolean Turn;
 
     public GameLogic() {
-        this.Attacker = new ConcretePlayer(false);
-        this.Defender = new ConcretePlayer(true);
+        this.Player1 = new ConcretePlayer(true);
+        this.Player2 = new ConcretePlayer(false);
         this.Turn = false;
         reset();
     }
 
     @Override
     public boolean move(Position a, Position b) {
-        System.out.println("a = " + a.getX() + ", " + a.getY());
-        System.out.println("b = " + b.getX() + ", " + b.getY());
-//        System.out.println(this.getPieceAtPosition(a).getType().equals("pawn"));
         if (this.getPieceAtPosition(a) == null || this.getPieceAtPosition(b) != null)
             return false; // check if chosen square isn't empty and destination is clear
-        if ((this.Turn && this.getPieceAtPosition(a).getOwner().isPlayerOne() == this.Attacker.isPlayerOne()) || (!this.Turn && this.getPieceAtPosition(a).getOwner().isPlayerOne() == this.Defender.isPlayerOne())) {
-            return false; // if turn = false its attackers turn same vice versa
+        if ((this.Turn && this.getPieceAtPosition(a).getOwner().isPlayerOne() == this.Player2.isPlayerOne()) || (!this.Turn && this.getPieceAtPosition(a).getOwner().isPlayerOne() == this.Player1.isPlayerOne())) {
+            return false; // if turn = false its Player2s turn same vice versa
         }
+
         if (!isPathClear(a, b)) {
             return false;
         }
+
         GameBoard[b.getX()][b.getY()] = GameBoard[a.getX()][a.getY()];
         GameBoard[a.getX()][a.getY()] = null;
+
+        this.Turn = !this.Turn;
+
         return true;
     }
 
@@ -37,25 +39,25 @@ public class GameLogic implements PlayableLogic {
         }
 
         if (bX > aX) {
-            for (int i = aX; i <= bX; i++) {
+            for (int i = aX + 1; i <= bX; i++) {
                 if (GameBoard[i][bY] != null) {
                     return false;
                 }
             }
         } else if (aX > bX) {
-            for (int i = bX; i <= aX; i++) {
+            for (int i = aX + 1; i <= bX; i++) {
                 if (GameBoard[i][bY] != null) {
                     return false;
                 }
             }
         } else if (bY > aY) {
-            for (int i = aY; i <= bY; i++) {
+            for (int i = aY + 1; i <= bY; i++) {
                 if (GameBoard[aX][i] != null) {
                     return false;
                 }
             }
         } else if (aY > bY) {
-            for (int i = bY; i <= aY; i++) {
+            for (int i = aY + 1; i <= bY; i++) {
                 if (GameBoard[aX][i] != null) {
                     return false;
                 }
@@ -72,14 +74,15 @@ public class GameLogic implements PlayableLogic {
 
     @Override
     public Player getFirstPlayer() {
-
-        if (Attacker.isPlayerOne() && !Defender.isPlayerOne()) return Attacker;
+        if (Player2.isPlayerOne()) return Player2;
+        else if (Player1.isPlayerOne()) return Player1;
         else throw new RuntimeException("Initialize player status again");
     }
 
     @Override
     public Player getSecondPlayer() {
-        if (Attacker.isPlayerOne() && !Defender.isPlayerOne()) return Defender;
+        if (!Player2.isPlayerOne()) return Player2;
+        else if (!Player1.isPlayerOne()) return Player1;
         else throw new RuntimeException("Initialize player status again");
     }
 
@@ -90,13 +93,13 @@ public class GameLogic implements PlayableLogic {
 
     @Override
     public boolean isSecondPlayerTurn() {
-        return false;
+        return !Turn;
     }
 
     @Override
     public void reset() {
         setBoard();
-        // Attacker.isPlayerOne()
+        // Player2.isPlayerOne()
 
 
     }
@@ -114,43 +117,43 @@ public class GameLogic implements PlayableLogic {
     public void setBoard() {
         ConcretePiece[][] Board = new ConcretePiece[11][11];
 
-        Pawn aPawn1 = new Pawn(this.Attacker, "♟");
-        Pawn aPawn2 = new Pawn(this.Attacker, "♟");
-        Pawn aPawn3 = new Pawn(this.Attacker, "♟");
-        Pawn aPawn4 = new Pawn(this.Attacker, "♟");
-        Pawn aPawn5 = new Pawn(this.Attacker, "♟");
-        Pawn aPawn6 = new Pawn(this.Attacker, "♟");
-        Pawn aPawn7 = new Pawn(this.Attacker, "♟");
-        Pawn aPawn8 = new Pawn(this.Attacker, "♟");
-        Pawn aPawn9 = new Pawn(this.Attacker, "♟");
-        Pawn aPawn10 = new Pawn(this.Attacker, "♟");
-        Pawn aPawn11 = new Pawn(this.Attacker, "♟");
-        Pawn aPawn12 = new Pawn(this.Attacker, "♟");
-        Pawn aPawn13 = new Pawn(this.Attacker, "♟");
-        Pawn aPawn14 = new Pawn(this.Attacker, "♟");
-        Pawn aPawn15 = new Pawn(this.Attacker, "♟");
-        Pawn aPawn16 = new Pawn(this.Attacker, "♟");
-        Pawn aPawn17 = new Pawn(this.Attacker, "♟");
-        Pawn aPawn18 = new Pawn(this.Attacker, "♟");
-        Pawn aPawn19 = new Pawn(this.Attacker, "♟");
-        Pawn aPawn20 = new Pawn(this.Attacker, "♟");
-        Pawn aPawn21 = new Pawn(this.Attacker, "♟");
-        Pawn aPawn22 = new Pawn(this.Attacker, "♟");
-        Pawn aPawn23 = new Pawn(this.Attacker, "♟");
-        Pawn aPawn24 = new Pawn(this.Attacker, "♟");
-        Pawn dPawn1 = new Pawn(this.Defender, "♙");
-        Pawn dPawn2 = new Pawn(this.Defender, "♙");
-        Pawn dPawn3 = new Pawn(this.Defender, "♙");
-        Pawn dPawn4 = new Pawn(this.Defender, "♙");
-        Pawn dPawn5 = new Pawn(this.Defender, "♙");
-        Pawn dPawn6 = new Pawn(this.Defender, "♙");
-        Pawn dPawn7 = new Pawn(this.Defender, "♙");
-        Pawn dPawn8 = new Pawn(this.Defender, "♙");
-        Pawn dPawn9 = new Pawn(this.Defender, "♙");
-        Pawn dPawn10 = new Pawn(this.Defender, "♙");
-        Pawn dPawn11 = new Pawn(this.Defender, "♙");
-        Pawn dPawn12 = new Pawn(this.Defender, "♙");
-        King dKing = new King(this.Defender, "♔");
+        Pawn aPawn1 = new Pawn(this.Player2);
+        Pawn aPawn2 = new Pawn(this.Player2);
+        Pawn aPawn3 = new Pawn(this.Player2);
+        Pawn aPawn4 = new Pawn(this.Player2);
+        Pawn aPawn5 = new Pawn(this.Player2);
+        Pawn aPawn6 = new Pawn(this.Player2);
+        Pawn aPawn7 = new Pawn(this.Player2);
+        Pawn aPawn8 = new Pawn(this.Player2);
+        Pawn aPawn9 = new Pawn(this.Player2);
+        Pawn aPawn10 = new Pawn(this.Player2);
+        Pawn aPawn11 = new Pawn(this.Player2);
+        Pawn aPawn12 = new Pawn(this.Player2);
+        Pawn aPawn13 = new Pawn(this.Player2);
+        Pawn aPawn14 = new Pawn(this.Player2);
+        Pawn aPawn15 = new Pawn(this.Player2);
+        Pawn aPawn16 = new Pawn(this.Player2);
+        Pawn aPawn17 = new Pawn(this.Player2);
+        Pawn aPawn18 = new Pawn(this.Player2);
+        Pawn aPawn19 = new Pawn(this.Player2);
+        Pawn aPawn20 = new Pawn(this.Player2);
+        Pawn aPawn21 = new Pawn(this.Player2);
+        Pawn aPawn22 = new Pawn(this.Player2);
+        Pawn aPawn23 = new Pawn(this.Player2);
+        Pawn aPawn24 = new Pawn(this.Player2);
+        Pawn dPawn1 = new Pawn(this.Player1);
+        Pawn dPawn2 = new Pawn(this.Player1);
+        Pawn dPawn3 = new Pawn(this.Player1);
+        Pawn dPawn4 = new Pawn(this.Player1);
+        Pawn dPawn5 = new Pawn(this.Player1);
+        Pawn dPawn6 = new Pawn(this.Player1);
+        Pawn dPawn7 = new Pawn(this.Player1);
+        Pawn dPawn8 = new Pawn(this.Player1);
+        Pawn dPawn9 = new Pawn(this.Player1);
+        Pawn dPawn10 = new Pawn(this.Player1);
+        Pawn dPawn11 = new Pawn(this.Player1);
+        Pawn dPawn12 = new Pawn(this.Player1);
+        King dKing = new King(this.Player1);
 
 
         Board[3][0] = aPawn1;
@@ -192,7 +195,7 @@ public class GameLogic implements PlayableLogic {
         Board[5][7] = dPawn12;
         Board[5][5] = dKing;
 
-        this.GameBoard = Board;
+        GameBoard = Board;
 
     }
 }
