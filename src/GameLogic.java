@@ -37,7 +37,7 @@ public class GameLogic implements PlayableLogic {
         GameBoard[aX][aY] = null;
 
         if (!this.getPieceAtPosition(b).getType().equals("♔")) eat(b);
-        
+
         this.Turn = !this.Turn;
 
         return true;
@@ -78,8 +78,43 @@ public class GameLogic implements PlayableLogic {
     }
 
     private static void eat(Position a) {
+        int aX = a.getX(), aY = a.getY();
         ArrayList<Position> neighbours = new ArrayList<>();
-//        if(a.getY() == 0 && a.getX() == 10) neighbours.add()
+        if (aY == 0) {
+            neighbours.add(new Position(aX - 1, aY));
+            neighbours.add(new Position(aX + 1, aY));
+            neighbours.add(new Position(aX - 1, aY + 1));
+            neighbours.add(new Position(aX, aY + 1));
+            neighbours.add(new Position(aX + 1, aY + 1));
+
+        } else if (aX == 0) {
+            neighbours.add(new Position(aX, aY + 1));
+            neighbours.add(new Position(aX + 1, aY + 1));
+            neighbours.add(new Position(aX + 1, aY));
+            neighbours.add(new Position(aX, aY - 1));
+            neighbours.add(new Position(aX + 1, aY - 1));
+        } else if (aY == 10) {
+            neighbours.add(new Position(aX - 1, aY));
+            neighbours.add(new Position(aX + 1, aY));
+            neighbours.add(new Position(aX - 1, aY - 1));
+            neighbours.add(new Position(aX, aY - 1));
+            neighbours.add(new Position(aX + 1, aY - 1));
+        } else if (aX == 10) {
+            neighbours.add(new Position(aX, aY + 1));
+            neighbours.add(new Position(aX - 1, aY + 1));
+            neighbours.add(new Position(aX - 1, aY));
+            neighbours.add(new Position(aX, aY - 1));
+            neighbours.add(new Position(aX - 1, aY - 1));
+        } else {
+            neighbours.add(new Position(aX - 1, aY + 1));
+            neighbours.add(new Position(aX, aY + 1));
+            neighbours.add(new Position(aX + 1, aY + 1));
+            neighbours.add(new Position(aX - 1, aY));
+            neighbours.add(new Position(aX + 1, aY));
+            neighbours.add(new Position(aX - 1, aY - 1));
+            neighbours.add(new Position(aX, aY - 1));
+            neighbours.add(new Position(aX + 1, aY - 1));
+        }
     }
 
     @Override
