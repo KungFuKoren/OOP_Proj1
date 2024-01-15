@@ -8,7 +8,8 @@ public class GameLogic implements PlayableLogic {
     private ConcretePlayer Player2; //Attacker
     public boolean Turn = false;
     public boolean KingDead = false;
-    public Stack<Position> gamePlay;
+    public Stack<Position[]> gamePlay;
+
 
     public GameLogic() {
         this.Player1 = new ConcretePlayer(true);
@@ -42,6 +43,10 @@ public class GameLogic implements PlayableLogic {
         GameBoard[aX][aY] = null;
 //        if (!this.getPieceAtPosition(b).getType().equals("♔")) eat(b);
         this.Turn = !this.Turn;
+        Position[] posArr = new Position[2];
+        posArr[0] = a;
+        posArr[1] = b;
+        this.gamePlay.add(posArr);
         return true;
     }
 
@@ -183,15 +188,23 @@ public class GameLogic implements PlayableLogic {
     @Override
     public void reset() {
         setBoard();
-        ArrayList<ConcretePiece[][]> newGame = new ArrayList<ConcretePiece[][]>();
-//        this.gamePlay = newGame;
-//        gamePlay.add(GameBoard);
+        Stack<Position[]> newGame = new Stack<Position[]>();
+        this.gamePlay = newGame;
         this.Turn = false;
         this.KingDead = false;
     }
 
     @Override
-    public void undoLastMove() {
+    public void undoLastMove() { // what if stack empty and change turn
+        Position[] tempArr = gamePlay.pop();
+        int xA = tempArr[0].getX();
+        int yA = tempArr[0].getY();
+        int xB = tempArr[1].getX();
+        int yB = tempArr[1].getY();
+        if (GameBoard[xA][yA] == null && ) {
+            GameBoard[xA][yA] = GameBoard[xB][yB];
+            GameBoard[xB][yB] = null;
+        }
 
     }
 
