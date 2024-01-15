@@ -201,10 +201,10 @@ public class GameLogic implements PlayableLogic {
         int yA = tempArr[0].getY();
         int xB = tempArr[1].getX();
         int yB = tempArr[1].getY();
-        if (GameBoard[xA][yA] == null && ) {
-            GameBoard[xA][yA] = GameBoard[xB][yB];
-            GameBoard[xB][yB] = null;
-        }
+//        if (GameBoard[xA][yA] == null && ) {
+//            GameBoard[xA][yA] = GameBoard[xB][yB];
+//            GameBoard[xB][yB] = null;
+//        }
 
     }
 
