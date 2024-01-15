@@ -16,6 +16,4 @@ public abstract class ConcretePiece implements Piece {
     public String getType() {
         return this.type;
     }
-
-
 }
