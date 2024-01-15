@@ -1,6 +1,10 @@
 public class ConcretePlayer implements Player {
-    private static boolean isPlayer1;
-    private static int numOfWins = 0;
+    private final boolean isPlayer1;
+    public int numOfWins = 0;
+
+    public ConcretePlayer(boolean isPlayer1) {
+        this.isPlayer1 = isPlayer1;
+    }
 
     @Override
     public boolean isPlayerOne() {
@@ -12,11 +16,3 @@ public class ConcretePlayer implements Player {
         return this.numOfWins;
     }
 }
-
-//public void setPlayer1() {
-//    this.isPlayer1 = true;
-//}
-
-//public void setPlayer2() {
-//    this.isPlayer1 = false;
-//}

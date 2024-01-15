@@ -1,6 +1,6 @@
 public class Position {
-    public static int x;
-    public static int y;
+    public int x;
+    public int y;
 
     public static final int boardSize = 11;
 
