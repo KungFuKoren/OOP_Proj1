@@ -90,49 +90,39 @@ public class GameLogic implements PlayableLogic {
         if (aY == 0) {
             neighbours.add(new Position(aX - 1, aY));
             neighbours.add(new Position(aX + 1, aY));
-            neighbours.add(new Position(aX - 1, aY + 1));
             neighbours.add(new Position(aX, aY + 1));
-            neighbours.add(new Position(aX + 1, aY + 1));
 
         } else if (aX == 0) {
             neighbours.add(new Position(aX, aY + 1));
-            neighbours.add(new Position(aX + 1, aY + 1));
             neighbours.add(new Position(aX + 1, aY));
             neighbours.add(new Position(aX, aY - 1));
-            neighbours.add(new Position(aX + 1, aY - 1));
         } else if (aY == 10) {
             neighbours.add(new Position(aX - 1, aY));
             neighbours.add(new Position(aX + 1, aY));
-            neighbours.add(new Position(aX - 1, aY - 1));
             neighbours.add(new Position(aX, aY - 1));
-            neighbours.add(new Position(aX + 1, aY - 1));
         } else if (aX == 10) {
             neighbours.add(new Position(aX, aY + 1));
-            neighbours.add(new Position(aX - 1, aY + 1));
             neighbours.add(new Position(aX - 1, aY));
             neighbours.add(new Position(aX, aY - 1));
-            neighbours.add(new Position(aX - 1, aY - 1));
         } else {
-            neighbours.add(new Position(aX - 1, aY + 1));
             neighbours.add(new Position(aX, aY + 1));
-            neighbours.add(new Position(aX + 1, aY + 1));
             neighbours.add(new Position(aX - 1, aY));
             neighbours.add(new Position(aX + 1, aY));
-            neighbours.add(new Position(aX - 1, aY - 1));
             neighbours.add(new Position(aX, aY - 1));
-            neighbours.add(new Position(aX + 1, aY - 1));
         }
 
 
         for (int i = 0; i < neighbours.size(); i++) {
             Position neighbourPos = neighbours.get(i);
-            if (getPieceAtPosition(neighbourPos) == null) continue;
+            ConcretePiece neighbour = (ConcretePiece) getPieceAtPosition(neighbourPos);
+            if (neighbour == null) continue;
             boolean currentIsP1 = this.getPieceAtPosition(neighbourPos).getOwner().isPlayerOne();
             if ((currentIsP1 && !Turn) || (!currentIsP1 && Turn)) {
                 if (this.getPieceAtPosition(neighbourPos).getType().equals("♔")) { // if neighbour is King check if eaten
-                    ArrayList<Position> kingNeighbours = new ArrayList<>();
+//                    ArrayList<Position> kingNeighbours = new ArrayList<>();
                     System.out.println("KING");
-//                    if
+                } else {
+//                    if(neighbourPos.getX() == )
                 }
                 // Turns = true -> player1 turn
             }
