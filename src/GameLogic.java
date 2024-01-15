@@ -44,7 +44,7 @@ public class GameLogic implements PlayableLogic {
         GameBoard[aX][aY].hasBeen.add(b);
         GameBoard[bX][bY] = GameBoard[aX][aY];
         GameBoard[aX][aY] = null;
-        if (!this.getPieceAtPosition(b).getType().equals("♔")) eat(b);
+        if (!this.getPieceAtPosition(b).getType().equals("♔")) checkKill(b);
         this.Turn = !this.Turn;
         Position[] posArr = new Position[2];
         posArr[0] = a;
@@ -87,7 +87,7 @@ public class GameLogic implements PlayableLogic {
         return true;
     }
 
-    private void eat(Position a) {
+    private void checkKill(Position a) {
         int aX = a.getX(), aY = a.getY();
         ArrayList<Position> neighbours = new ArrayList<>();
 
@@ -126,11 +126,33 @@ public class GameLogic implements PlayableLogic {
 //                    ArrayList<Position> kingNeighbours = new ArrayList<>();
                     System.out.println("KING");
                 } else {
-//                    if(neighbourPos.getX() == )
+                    if (neighbourPos.getX() == aX - 1 && neighbourPos.getY() == aY) {
+                        if (GameBoard[aX - 2][aY] != null || aX - 2 < 0) {
+                            kill(a, neighbourPos);
+                        }
+                    } else if (neighbourPos.getX() == aX + 1 && neighbourPos.getY() == aY) {
+                        if (GameBoard[aX + 2][aY] != null || aX + 2 > 10) {
+                            kill(a, neighbourPos);
+                        }
+                    } else if (neighbourPos.getY() == aY - 1 && neighbourPos.getX() == aX) {
+                        if (GameBoard[aX][aY - 2] != null || aY - 2 < 0) {
+                            kill(a, neighbourPos);
+                        }
+                    } else if (neighbourPos.getY() == aY + 1 && neighbourPos.getX() == aX) {
+                        if (GameBoard[aX + 2][aY] != null || aX + 2 < 0) {
+                            kill(a, neighbourPos);
+                        }
+                    }
                 }
                 // Turns = true -> player1 turn
             }
         }
+    }
+
+    private void kill(Position killerPos, Position victimPos) {
+        Pawn killer = (Pawn) getPieceAtPosition(killerPos);
+        killer.ateAPiece();
+        GameBoard[victimPos.getX()][victimPos.getY()] = null;
     }
 
     @Override
@@ -294,7 +316,8 @@ public class GameLogic implements PlayableLogic {
         GameBoard = Board;
 
     }
-    public static void logWhenEnd(){
+
+    public static void logWhenEnd() {
 
     }
 }

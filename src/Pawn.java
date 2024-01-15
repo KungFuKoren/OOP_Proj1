@@ -5,21 +5,11 @@ public class Pawn extends ConcretePiece {
         super(owner, owner.isPlayerOne() ? "♙" : "♟");
     }
 
-//    @Override
-//    public String getType() {
-//        return super.getType();
-//    }
-//
-//    @Override
-//    public ConcretePlayer getOwner() {
-//        return super.getOwner();
-//    }
-
     public int getPiecesAte() {
         return piecesAte;
     }
 
-    public void ateAPiece(int piecesAte) {
+    public void ateAPiece() {
         this.piecesAte++;
     }
 }
