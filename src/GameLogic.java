@@ -41,7 +41,7 @@ public class GameLogic implements PlayableLogic {
 
         GameBoard[bX][bY] = GameBoard[aX][aY];
         GameBoard[aX][aY] = null;
-//        if (!this.getPieceAtPosition(b).getType().equals("♔")) eat(b);
+        if (!this.getPieceAtPosition(b).getType().equals("♔")) eat(b);
         this.Turn = !this.Turn;
         Position[] posArr = new Position[2];
         posArr[0] = a;
@@ -125,13 +125,14 @@ public class GameLogic implements PlayableLogic {
 
 
         for (int i = 0; i < neighbours.size(); i++) {
-            Position neighbour = neighbours.get(i);
-            System.out.println(neighbour.getX() + ", " + neighbour.getY());
-            if (neighbour == null) continue;
-            boolean currentIsP1 = this.getPieceAtPosition(neighbour).getOwner().isPlayerOne();
+            Position neighbourPos = neighbours.get(i);
+            if (getPieceAtPosition(neighbourPos) == null) continue;
+            boolean currentIsP1 = this.getPieceAtPosition(neighbourPos).getOwner().isPlayerOne();
             if ((currentIsP1 && !Turn) || (!currentIsP1 && Turn)) {
-                if (this.getPieceAtPosition(a).getType().equals("♔")) { // if neighbour is King check if eaten
-
+                if (this.getPieceAtPosition(neighbourPos).getType().equals("♔")) { // if neighbour is King check if eaten
+                    ArrayList<Position> kingNeighbours = new ArrayList<>();
+                    System.out.println("KING");
+//                    if
                 }
                 // Turns = true -> player1 turn
             }
