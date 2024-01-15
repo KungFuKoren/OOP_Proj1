@@ -41,7 +41,7 @@ public class GameLogic implements PlayableLogic {
         if (!isPathClear(a, b)) {
             return false;
         }
-
+        GameBoard[aX][aY].hasBeen.add(b);
         GameBoard[bX][bY] = GameBoard[aX][aY];
         GameBoard[aX][aY] = null;
 //        if (!this.getPieceAtPosition(b).getType().equals("♔")) eat(b);
@@ -50,6 +50,7 @@ public class GameLogic implements PlayableLogic {
         posArr[0] = a;
         posArr[1] = b;
         this.gamePlay.add(posArr);
+
         return true;
     }
 
@@ -134,7 +135,6 @@ public class GameLogic implements PlayableLogic {
             boolean currentIsP1 = this.getPieceAtPosition(neighbour).getOwner().isPlayerOne();
             if ((currentIsP1 && !Turn) || (!currentIsP1 && Turn)) {
                 if (this.getPieceAtPosition(a).getType().equals("♔")) { // if neighbour is King check if eaten
-
                 }
                 // Turns = true -> player1 turn
             }
@@ -199,14 +199,17 @@ public class GameLogic implements PlayableLogic {
 
     @Override
     public void undoLastMove() { // what if stack empty and change turn
-        Position[] tempArr = gamePlay.pop();
-        int xA = tempArr[0].getX();
-        int yA = tempArr[0].getY();
-        int xB = tempArr[1].getX();
-        int yB = tempArr[1].getY();
-        if (GameBoard[xA][yA] == null && ) {
-            GameBoard[xA][yA] = GameBoard[xB][yB];
-            GameBoard[xB][yB] = null;
+        if(!gamePlay.empty()) {
+            Position[] tempArr = gamePlay.pop();
+            int xA = tempArr[0].getX();
+            int yA = tempArr[0].getY();
+            int xB = tempArr[1].getX();
+            int yB = tempArr[1].getY();
+            if (GameBoard[xA][yA] == null) {
+                GameBoard[xA][yA] = GameBoard[xB][yB];
+                GameBoard[xB][yB] = null;
+                this.Turn = !Turn;
+            }
         }
 
     }
@@ -300,6 +303,9 @@ public class GameLogic implements PlayableLogic {
         Board[5][5] = dKing;
 
         GameBoard = Board;
+
+    }
+    public static void logWhenEnd(){
 
     }
 }
