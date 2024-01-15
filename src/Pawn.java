@@ -1,8 +1,8 @@
 public class Pawn extends ConcretePiece {
     private int piecesAte = 0;
 
-    public Pawn(ConcretePlayer owner) {
-        super(owner, owner.isPlayerOne() ? "♙" : "♟");
+    public Pawn(ConcretePlayer owner,String name) {
+        super(owner, owner.isPlayerOne() ? "♙" : "♟" , name);
     }
 
     public int getPiecesAte() {
