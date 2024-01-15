@@ -44,7 +44,7 @@ public class GameLogic implements PlayableLogic {
         GameBoard[aX][aY].hasBeen.add(b);
         GameBoard[bX][bY] = GameBoard[aX][aY];
         GameBoard[aX][aY] = null;
-//        if (!this.getPieceAtPosition(b).getType().equals("♔")) eat(b);
+        if (!this.getPieceAtPosition(b).getType().equals("♔")) eat(b);
         this.Turn = !this.Turn;
         Position[] posArr = new Position[2];
         posArr[0] = a;
@@ -94,47 +94,39 @@ public class GameLogic implements PlayableLogic {
         if (aY == 0) {
             neighbours.add(new Position(aX - 1, aY));
             neighbours.add(new Position(aX + 1, aY));
-            neighbours.add(new Position(aX - 1, aY + 1));
             neighbours.add(new Position(aX, aY + 1));
-            neighbours.add(new Position(aX + 1, aY + 1));
 
         } else if (aX == 0) {
             neighbours.add(new Position(aX, aY + 1));
-            neighbours.add(new Position(aX + 1, aY + 1));
             neighbours.add(new Position(aX + 1, aY));
             neighbours.add(new Position(aX, aY - 1));
-            neighbours.add(new Position(aX + 1, aY - 1));
         } else if (aY == 10) {
             neighbours.add(new Position(aX - 1, aY));
             neighbours.add(new Position(aX + 1, aY));
-            neighbours.add(new Position(aX - 1, aY - 1));
             neighbours.add(new Position(aX, aY - 1));
-            neighbours.add(new Position(aX + 1, aY - 1));
         } else if (aX == 10) {
             neighbours.add(new Position(aX, aY + 1));
-            neighbours.add(new Position(aX - 1, aY + 1));
             neighbours.add(new Position(aX - 1, aY));
             neighbours.add(new Position(aX, aY - 1));
-            neighbours.add(new Position(aX - 1, aY - 1));
         } else {
-            neighbours.add(new Position(aX - 1, aY + 1));
             neighbours.add(new Position(aX, aY + 1));
-            neighbours.add(new Position(aX + 1, aY + 1));
             neighbours.add(new Position(aX - 1, aY));
             neighbours.add(new Position(aX + 1, aY));
-            neighbours.add(new Position(aX - 1, aY - 1));
             neighbours.add(new Position(aX, aY - 1));
-            neighbours.add(new Position(aX + 1, aY - 1));
         }
 
 
         for (int i = 0; i < neighbours.size(); i++) {
-            Position neighbour = neighbours.get(i);
-            System.out.println(neighbour.getX() + ", " + neighbour.getY());
+            Position neighbourPos = neighbours.get(i);
+            ConcretePiece neighbour = (ConcretePiece) getPieceAtPosition(neighbourPos);
             if (neighbour == null) continue;
-            boolean currentIsP1 = this.getPieceAtPosition(neighbour).getOwner().isPlayerOne();
+            boolean currentIsP1 = this.getPieceAtPosition(neighbourPos).getOwner().isPlayerOne();
             if ((currentIsP1 && !Turn) || (!currentIsP1 && Turn)) {
-                if (this.getPieceAtPosition(a).getType().equals("♔")) { // if neighbour is King check if eaten
+                if (this.getPieceAtPosition(neighbourPos).getType().equals("♔")) { // if neighbour is King check if eaten
+//                    ArrayList<Position> kingNeighbours = new ArrayList<>();
+                    System.out.println("KING");
+                } else {
+//                    if(neighbourPos.getX() == )
                 }
                 // Turns = true -> player1 turn
             }
@@ -199,18 +191,15 @@ public class GameLogic implements PlayableLogic {
 
     @Override
     public void undoLastMove() { // what if stack empty and change turn
-        if(!gamePlay.empty()) {
-            Position[] tempArr = gamePlay.pop();
-            int xA = tempArr[0].getX();
-            int yA = tempArr[0].getY();
-            int xB = tempArr[1].getX();
-            int yB = tempArr[1].getY();
-            if (GameBoard[xA][yA] == null) {
-                GameBoard[xA][yA] = GameBoard[xB][yB];
-                GameBoard[xB][yB] = null;
-                this.Turn = !Turn;
-            }
-        }
+        Position[] tempArr = gamePlay.pop();
+        int xA = tempArr[0].getX();
+        int yA = tempArr[0].getY();
+        int xB = tempArr[1].getX();
+        int yB = tempArr[1].getY();
+//        if (GameBoard[xA][yA] == null && ) {
+//            GameBoard[xA][yA] = GameBoard[xB][yB];
+//            GameBoard[xB][yB] = null;
+//        }
 
     }
 
