@@ -124,20 +124,21 @@ public class GameLogic implements PlayableLogic {
 //                    ArrayList<Position> kingNeighbours = new ArrayList<>();
                     System.out.println("KING");
                 } else {
+                    boolean currentPIsP1 = getPieceAtPosition(a).getOwner().isPlayerOne();
                     if (neighbourPos.getX() == aX - 1 && neighbourPos.getY() == aY) {
-                        if (GameBoard[aX - 2][aY] != null || aX - 2 < 0) {
+                        if (aX - 2 < 0 || (GameBoard[aX - 2][aY] != null && GameBoard[aX - 2][aY].getOwner().isPlayerOne() == currentPIsP1)) {
                             kill(a, neighbourPos);
                         }
                     } else if (neighbourPos.getX() == aX + 1 && neighbourPos.getY() == aY) {
-                        if (GameBoard[aX + 2][aY] != null || aX + 2 > 10) {
+                        if (aX + 2 > 10 || (GameBoard[aX + 2][aY] != null && GameBoard[aX + 2][aY].getOwner().isPlayerOne() == currentPIsP1)) {
                             kill(a, neighbourPos);
                         }
                     } else if (neighbourPos.getY() == aY - 1 && neighbourPos.getX() == aX) {
-                        if (GameBoard[aX][aY - 2] != null || aY - 2 < 0) {
+                        if (aY - 2 < 0 || (GameBoard[aX][aY - 2] != null && GameBoard[aX][aY - 2].getOwner().isPlayerOne() == currentPIsP1)) {
                             kill(a, neighbourPos);
                         }
                     } else if (neighbourPos.getY() == aY + 1 && neighbourPos.getX() == aX) {
-                        if (GameBoard[aX + 2][aY] != null || aX + 2 < 0) {
+                        if (aY + 2 > 10 || (GameBoard[aX][aY + 2] != null && GameBoard[aX][aY + 2].getOwner().isPlayerOne() == currentPIsP1)) {
                             kill(a, neighbourPos);
                         }
                     }
@@ -177,6 +178,7 @@ public class GameLogic implements PlayableLogic {
 
         if (KingDead) {
             this.Player2.numOfWins++;
+            logWhenEnd();
             reset();
             return true;
         }
@@ -189,6 +191,7 @@ public class GameLogic implements PlayableLogic {
                 (getPieceAtPosition(pos3) != null && Objects.equals(getPieceAtPosition(pos3).getType(), "♔")) ||
                 (getPieceAtPosition(pos4) != null && Objects.equals(getPieceAtPosition(pos4).getType(), "♔"))) {
             this.Player1.numOfWins++;
+            logWhenEnd();
             reset();
             return true;
         }
@@ -211,14 +214,14 @@ public class GameLogic implements PlayableLogic {
 
     @Override
     public void undoLastMove() { // what if got eaten
-        if(!this.gamePlay.empty()) {
+        if (!this.gamePlay.empty()) {
             Position[] tempArr = gamePlay.pop();
 
             int xA = tempArr[0].getX();
             int yA = tempArr[0].getY();
             int xB = tempArr[1].getX();
             int yB = tempArr[1].getY();
-            GameBoard[xA][yA].hasBeen.remove(tempArr);
+            GameBoard[xB][yB].hasBeen.remove(tempArr);
 
             if (GameBoard[xA][yA] == null) {
                 GameBoard[xA][yA] = GameBoard[xB][yB];
@@ -282,7 +285,7 @@ public class GameLogic implements PlayableLogic {
 //        Pawn dPawn10 = new Pawn(this.Player1 , "D10");
 //        Pawn dPawn11 = new Pawn(this.Player1 , "D11");
 //        Pawn dPawn12 = new Pawn(this.Player1 , "D12");
-        King dKing = new King(this.Player1 , "K");
+        King dKing = new King(this.Player1, "K");
 
 
         Board[3][0] = aPawn[0];
@@ -326,24 +329,31 @@ public class GameLogic implements PlayableLogic {
         Board[5][5] = dKing;
         GameBoard = Board;
 
-        for (int i = 0; i < 11 ; i++) {
-            for (int j = 0; j <11; j++) {
-                if(GameBoard[i][j] != null){
-                    Position arrPos = new Position(i , j);
+        for (int i = 0; i < 11; i++) {
+            for (int j = 0; j < 11; j++) {
+                if (GameBoard[i][j] != null) {
+                    Position arrPos = new Position(i, j);
                     GameBoard[i][j].hasBeen.add(arrPos);
                 }
             }
         }
 
     }
-    public static void logWhenEnd(){
-        HashMap<Position, ConcretePiece> numberByName = new HashMap<>();
-        for (int i = 0; i < 11; i++) {
-            for (int j = 0; j < 11; j++) {
 
+    public static void logWhenEnd() {
+        ArrayList<ConcretePiece> pieceOnBoard = new ArrayList<ConcretePiece>();
+        for(int i = 0; i < 11; i++) {
+            for (int j = 0; j < 11; j++) {
+                if (GameBoard[i][j] != null) {
+                    pieceOnBoard.add()
+                    Iterator<Position> tempIter = GameBoard[i][j].hasBeen.iterator();
+                    System.out.println(GameBoard[i][j].name + ": " + GameBoard[i][j].hasBeen + "\n");
+                }
             }
         }
-        Iterator<Position> moved = GameBoard[3][0].hasBeen.iterator();
+
+
+//        Iterator<Position> moved = GameBoard[3][0].hasBeen.iterator();
     }
 }
 
