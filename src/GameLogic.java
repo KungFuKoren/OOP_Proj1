@@ -324,8 +324,16 @@ public class GameLogic implements PlayableLogic {
         Board[6][6] = dPawn[10];
         Board[5][7] = dPawn[11];
         Board[5][5] = dKing;
-
         GameBoard = Board;
+
+        for (int i = 0; i < 11 ; i++) {
+            for (int j = 0; j <11; j++) {
+                if(GameBoard[i][j] != null){
+                    Position arrPos = new Position(i , j);
+                    GameBoard[i][j].hasBeen.add(arrPos);
+                }
+            }
+        }
 
     }
     public static void logWhenEnd(){

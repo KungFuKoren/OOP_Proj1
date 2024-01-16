@@ -6,7 +6,7 @@ public abstract class ConcretePiece implements Piece {
     
     public final String name;
 
-    public ArrayList<Position> hasBeen;
+    public ArrayList<Position> hasBeen = new ArrayList<>();
 
     public ConcretePiece(ConcretePlayer owner, String type , String name) {
         this.owner = owner;
