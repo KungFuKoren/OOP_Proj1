@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.Comparator;
 
 public class GameLogic implements PlayableLogic {
     public static ConcretePiece[][] GameBoard;
@@ -126,19 +127,19 @@ public class GameLogic implements PlayableLogic {
                 } else {
                     boolean currentPIsP1 = getPieceAtPosition(a).getOwner().isPlayerOne();
                     if (neighbourPos.getX() == aX - 1 && neighbourPos.getY() == aY) {
-                        if (aX - 2 < 0 || (GameBoard[aX - 2][aY] != null && GameBoard[aX - 2][aY].getOwner().isPlayerOne() == currentPIsP1)) {
+                        if (aX - 2 < 0 || (aX - 2 == 0 && aY == 0) || (aX - 2 == 0 && aY == 10) || (GameBoard[aX - 2][aY] != null && GameBoard[aX - 2][aY].getOwner().isPlayerOne() == currentPIsP1)) {
                             kill(a, neighbourPos);
                         }
                     } else if (neighbourPos.getX() == aX + 1 && neighbourPos.getY() == aY) {
-                        if (aX + 2 > 10 || (GameBoard[aX + 2][aY] != null && GameBoard[aX + 2][aY].getOwner().isPlayerOne() == currentPIsP1)) {
+                        if (aX + 2 > 10 || (aX + 2 == 10 && aY == 0) || (aX + 2 == 10 && aY == 10) || (GameBoard[aX + 2][aY] != null && GameBoard[aX + 2][aY].getOwner().isPlayerOne() == currentPIsP1)) {
                             kill(a, neighbourPos);
                         }
                     } else if (neighbourPos.getY() == aY - 1 && neighbourPos.getX() == aX) {
-                        if (aY - 2 < 0 || (GameBoard[aX][aY - 2] != null && GameBoard[aX][aY - 2].getOwner().isPlayerOne() == currentPIsP1)) {
+                        if (aY - 2 < 0 || (aX == 0 && aY - 2 == 0) || (aX == 10 && aY - 2 == 0) || (GameBoard[aX][aY - 2] != null && GameBoard[aX][aY - 2].getOwner().isPlayerOne() == currentPIsP1)) {
                             kill(a, neighbourPos);
                         }
                     } else if (neighbourPos.getY() == aY + 1 && neighbourPos.getX() == aX) {
-                        if (aY + 2 > 10 || (GameBoard[aX][aY + 2] != null && GameBoard[aX][aY + 2].getOwner().isPlayerOne() == currentPIsP1)) {
+                        if (aY + 2 > 10 || (aX == 0 && aY + 2 == 10) || (aX == 10 && aY + 2 == 10) || (GameBoard[aX][aY + 2] != null && GameBoard[aX][aY + 2].getOwner().isPlayerOne() == currentPIsP1)) {
                             kill(a, neighbourPos);
                         }
                     }
@@ -341,17 +342,21 @@ public class GameLogic implements PlayableLogic {
     }
 
     public static void logWhenEnd() {
-        ArrayList<ConcretePiece> pieceOnBoard = new ArrayList<ConcretePiece>();
-        for(int i = 0; i < 11; i++) {
+        ArrayList<ArrayList<Position>> pieceOnBoard = new ArrayList<ArrayList<Position>>();
+
+        for (int i = 0; i < 11; i++) {
             for (int j = 0; j < 11; j++) {
                 if (GameBoard[i][j] != null) {
-                    pieceOnBoard.add()
+                    pieceOnBoard.add(GameBoard[i][j].hasBeen);
                     Iterator<Position> tempIter = GameBoard[i][j].hasBeen.iterator();
                     System.out.println(GameBoard[i][j].name + ": " + GameBoard[i][j].hasBeen + "\n");
                 }
             }
         }
-
+        pieceOnBoard.sort(Comparator.comparingInt(ArrayList<Position>::size));
+        for (int i = 0; i < pieceOnBoard.size(); i++) {
+            System.out.println(pieceOnBoard.get(i));
+        }
 
 //        Iterator<Position> moved = GameBoard[3][0].hasBeen.iterator();
     }
