@@ -1,6 +1,7 @@
 public class ConcretePlayer implements Player {
     private final boolean isPlayer1;
     public int numOfWins = 0;
+    public boolean iWon = false;
 
     public ConcretePlayer(boolean isPlayer1) {
         this.isPlayer1 = isPlayer1;
@@ -15,4 +16,6 @@ public class ConcretePlayer implements Player {
     public int getWins() {
         return this.numOfWins;
     }
+
+    public boolean hasWon(){return this.iWon;}
 }
