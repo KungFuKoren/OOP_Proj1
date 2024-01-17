@@ -9,6 +9,8 @@ public class GameLogic implements PlayableLogic {
     public boolean KingDead = false;
     public Stack<Position[]> gamePlay;
 
+    public ConcretePiece[] allPieces;
+
 
     ConcretePiece[][] resetBoard = new ConcretePiece[11][11];
 
@@ -30,7 +32,7 @@ public class GameLogic implements PlayableLogic {
         }
 
         int aX = a.getX(), aY = a.getY(), bX = b.getX(), bY = b.getY();
-        boolean currentPieceIsKing = getPieceAtPosition(a).getType().equals("♔");
+        boolean currentPieceIsKing = isKing(a);
 
         if (((bX == 0 && bY == 0) || (bX == 10 && bY == 0) || (bX == 0 && bY == 10) ||
                 (bX == 10 && bY == 10)) && (!currentPieceIsKing)) {
@@ -43,7 +45,7 @@ public class GameLogic implements PlayableLogic {
         GameBoard[aX][aY].hasBeen.add(b);
         GameBoard[bX][bY] = GameBoard[aX][aY];
         GameBoard[aX][aY] = null;
-        if (!this.getPieceAtPosition(b).getType().equals("♔")) checkKill(b);
+        if (!isKing(b)) checkKill(b);
         this.Turn = !this.Turn;
         Position[] posArr = new Position[2];
         posArr[0] = a;
@@ -88,6 +90,57 @@ public class GameLogic implements PlayableLogic {
 
     private void checkKill(Position a) {
         int aX = a.getX(), aY = a.getY();
+        ArrayList<Position> neighbours = getNeighbours(a);
+
+        for (int i = 0; i < neighbours.size(); i++) {
+            Position neighbourPos = neighbours.get(i);
+            ConcretePiece neighbour = (ConcretePiece) getPieceAtPosition(neighbourPos);
+            if (neighbour == null) continue;
+            boolean currentIsP1 = this.getPieceAtPosition(neighbourPos).getOwner().isPlayerOne();
+            if ((currentIsP1 && !Turn) || (!currentIsP1 && Turn)) {
+                if (isKing(neighbourPos)) { // if neighbour is King check if eaten
+                    if(Turn) return;
+                    ArrayList<Position> kingNeighbours = getNeighbours(neighbourPos);
+                    boolean kingEaten = true;
+                    for (int j = 0; j < kingNeighbours.size(); j++) {
+                        Position kingNeighbour = kingNeighbours.get(i);
+                        if(kingNeighbour)
+                    }
+                } else {
+                    boolean currentPIsP1 = getPieceAtPosition(a).getOwner().isPlayerOne();
+                    if (neighbourPos.getX() == aX - 1 && neighbourPos.getY() == aY) {
+                        if (aX - 2 < 0 || (aX - 2 == 0 && aY == 0) || (aX - 2 == 0 && aY == 10) ||
+                                (GameBoard[aX - 2][aY] != null && GameBoard[aX - 2][aY].getOwner().isPlayerOne() == currentPIsP1 &&
+                                        !isKing(new Position(aX-2,aY)))) {
+                            kill(a, neighbourPos);
+                        }
+                    } else if (neighbourPos.getX() == aX + 1 && neighbourPos.getY() == aY) {
+                        if (aX + 2 > 10 || (aX + 2 == 10 && aY == 0) || (aX + 2 == 10 && aY == 10) ||
+                                (GameBoard[aX + 2][aY] != null && GameBoard[aX + 2][aY].getOwner().isPlayerOne() == currentPIsP1 &&
+                                        !isKing(new Position(aX+2,aY)))) {
+                            kill(a, neighbourPos);
+                        }
+                    } else if (neighbourPos.getY() == aY - 1 && neighbourPos.getX() == aX) {
+                        if (aY - 2 < 0 || (aX == 0 && aY - 2 == 0) || (aX == 10 && aY - 2 == 0) ||
+                                (GameBoard[aX][aY - 2] != null && GameBoard[aX][aY - 2].getOwner().isPlayerOne() == currentPIsP1 &&
+                                        !isKing(new Position(aX,aY-2)))) {
+                            kill(a, neighbourPos);
+                        }
+                    } else if (neighbourPos.getY() == aY + 1 && neighbourPos.getX() == aX) {
+                        if (aY + 2 > 10 || (aX == 0 && aY + 2 == 10) || (aX == 10 && aY + 2 == 10) ||
+                                (GameBoard[aX][aY + 2] != null && GameBoard[aX][aY + 2].getOwner().isPlayerOne() == currentPIsP1 &&
+                                        !isKing(new Position(aX,aY+2)))) {
+                            kill(a, neighbourPos);
+                        }
+                    }
+                }
+                // Turns = true -> player1 turn
+            }
+        }
+    }
+
+    private ArrayList<Position> getNeighbours(Position a){
+        int aX = a.getX(), aY = a.getY();
         ArrayList<Position> neighbours = new ArrayList<>();
 
         if (aY == 0) {
@@ -113,40 +166,11 @@ public class GameLogic implements PlayableLogic {
             neighbours.add(new Position(aX + 1, aY));
             neighbours.add(new Position(aX, aY - 1));
         }
+        return neighbours;
+    }
 
-
-        for (int i = 0; i < neighbours.size(); i++) {
-            Position neighbourPos = neighbours.get(i);
-            ConcretePiece neighbour = (ConcretePiece) getPieceAtPosition(neighbourPos);
-            if (neighbour == null) continue;
-            boolean currentIsP1 = this.getPieceAtPosition(neighbourPos).getOwner().isPlayerOne();
-            if ((currentIsP1 && !Turn) || (!currentIsP1 && Turn)) {
-                if (this.getPieceAtPosition(neighbourPos).getType().equals("♔")) { // if neighbour is King check if eaten
-//                    ArrayList<Position> kingNeighbours = new ArrayList<>();
-                    System.out.println("KING");
-                } else {
-                    boolean currentPIsP1 = getPieceAtPosition(a).getOwner().isPlayerOne();
-                    if (neighbourPos.getX() == aX - 1 && neighbourPos.getY() == aY) {
-                        if (aX - 2 < 0 || (aX - 2 == 0 && aY == 0) || (aX - 2 == 0 && aY == 10) || (GameBoard[aX - 2][aY] != null && GameBoard[aX - 2][aY].getOwner().isPlayerOne() == currentPIsP1)) {
-                            kill(a, neighbourPos);
-                        }
-                    } else if (neighbourPos.getX() == aX + 1 && neighbourPos.getY() == aY) {
-                        if (aX + 2 > 10 || (aX + 2 == 10 && aY == 0) || (aX + 2 == 10 && aY == 10) || (GameBoard[aX + 2][aY] != null && GameBoard[aX + 2][aY].getOwner().isPlayerOne() == currentPIsP1)) {
-                            kill(a, neighbourPos);
-                        }
-                    } else if (neighbourPos.getY() == aY - 1 && neighbourPos.getX() == aX) {
-                        if (aY - 2 < 0 || (aX == 0 && aY - 2 == 0) || (aX == 10 && aY - 2 == 0) || (GameBoard[aX][aY - 2] != null && GameBoard[aX][aY - 2].getOwner().isPlayerOne() == currentPIsP1)) {
-                            kill(a, neighbourPos);
-                        }
-                    } else if (neighbourPos.getY() == aY + 1 && neighbourPos.getX() == aX) {
-                        if (aY + 2 > 10 || (aX == 0 && aY + 2 == 10) || (aX == 10 && aY + 2 == 10) || (GameBoard[aX][aY + 2] != null && GameBoard[aX][aY + 2].getOwner().isPlayerOne() == currentPIsP1)) {
-                            kill(a, neighbourPos);
-                        }
-                    }
-                }
-                // Turns = true -> player1 turn
-            }
-        }
+    private boolean isKing (Position a){
+        return getPieceAtPosition(a).getType().equals("♔");
     }
 
     private void kill(Position killerPos, Position victimPos) {
@@ -188,10 +212,10 @@ public class GameLogic implements PlayableLogic {
         Position pos2 = new Position(0, 10);
         Position pos3 = new Position(10, 0);
         Position pos4 = new Position(10, 10);
-        if ((getPieceAtPosition(pos1) != null && Objects.equals(getPieceAtPosition(pos1).getType(), "♔")) ||
-                (getPieceAtPosition(pos2) != null && Objects.equals(getPieceAtPosition(pos2).getType(), "♔")) ||
-                (getPieceAtPosition(pos3) != null && Objects.equals(getPieceAtPosition(pos3).getType(), "♔")) ||
-                (getPieceAtPosition(pos4) != null && Objects.equals(getPieceAtPosition(pos4).getType(), "♔"))) {
+        if ((getPieceAtPosition(pos1) != null && isKing(pos1)) ||
+                (getPieceAtPosition(pos2) != null && isKing(pos2)) ||
+                (getPieceAtPosition(pos3) != null && isKing(pos3)) ||
+                (getPieceAtPosition(pos4) != null && isKing(pos4))) {
             this.Player1.numOfWins++;
             this.Player1.iWon = true;
             pathIterator();
@@ -325,13 +349,11 @@ public class GameLogic implements PlayableLogic {
             System.out.println(GameBoard[x][y].name + ": " + pieceOnBoard.get(i));
 
         }
-        for (int i = 0; i < pieceOnBoard.size(); i++) {
-            int x = pieceOnBoard.get(i).getLast().getX();
-            int y = pieceOnBoard.get(i).getLast().getY();
-            System.out.println(GameBoard[x][y].name + ": " + pieceOnBoard.get(i).size() + " squares");
-
-
-        }
+//        for (int i = 0; i < pieceOnBoard.size(); i++) {
+//            int x = pieceOnBoard.get(i).getLast().getX();
+//            int y = pieceOnBoard.get(i).getLast().getY();
+//            System.out.println(GameBoard[x][y].name + ": " + pieceOnBoard.get(i).size() + " squares");
+//        }
     }
 }
 
