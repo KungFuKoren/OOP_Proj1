@@ -179,7 +179,8 @@ public class GameLogic implements PlayableLogic {
 
         if (KingDead) {
             this.Player2.numOfWins++;
-            logWhenEnd();
+            this.Player2.iWon = true;
+            pathIterator();
             reset();
             return true;
         }
@@ -192,7 +193,8 @@ public class GameLogic implements PlayableLogic {
                 (getPieceAtPosition(pos3) != null && Objects.equals(getPieceAtPosition(pos3).getType(), "♔")) ||
                 (getPieceAtPosition(pos4) != null && Objects.equals(getPieceAtPosition(pos4).getType(), "♔"))) {
             this.Player1.numOfWins++;
-            logWhenEnd();
+            this.Player1.iWon = true;
+            pathIterator();
             reset();
             return true;
         }
@@ -211,6 +213,8 @@ public class GameLogic implements PlayableLogic {
         this.gamePlay = newGame;
         this.Turn = false;
         this.KingDead = false;
+        Player2.iWon = false;
+        Player1.iWon = false;
     }
 
     @Override
@@ -248,44 +252,6 @@ public class GameLogic implements PlayableLogic {
 
             dPawn[i] = new Pawn(this.Player1, "D" + (i + 1));
         }
-
-//        Pawn aPawn1 = new Pawn(this.Player2 , "A1");
-//        Pawn aPawn2 = new Pawn(this.Player2 , "A2");
-//        Pawn aPawn3 = new Pawn(this.Player2 , "A3");
-//        Pawn aPawn4 = new Pawn(this.Player2, "A4");
-//        Pawn aPawn5 = new Pawn(this.Player2 , "A5");
-//        Pawn aPawn6 = new Pawn(this.Player2 , "A6");
-//        Pawn aPawn7 = new Pawn(this.Player2 , "A7");
-//        Pawn aPawn8 = new Pawn(this.Player2 , "A8");
-//        Pawn aPawn9 = new Pawn(this.Player2 , "A9");
-//        Pawn aPawn10 = new Pawn(this.Player2 , "A10");
-//        Pawn aPawn11 = new Pawn(this.Player2 , "A11");
-//        Pawn aPawn12 = new Pawn(this.Player2 , "A12");
-//        Pawn aPawn13 = new Pawn(this.Player2 , "A13");
-//        Pawn aPawn14 = new Pawn(this.Player2 , "A14");
-//        Pawn aPawn15 = new Pawn(this.Player2 , "A15");
-//        Pawn aPawn16 = new Pawn(this.Player2 , "A16");
-//        Pawn aPawn17 = new Pawn(this.Player2 , "A17");
-//        Pawn aPawn18 = new Pawn(this.Player2 , "A18");
-//        Pawn aPawn19 = new Pawn(this.Player2 , "A19");
-//        Pawn aPawn20 = new Pawn(this.Player2 , "A20");
-//        Pawn aPawn21 = new Pawn(this.Player2 , "A21");
-//        Pawn aPawn22 = new Pawn(this.Player2 , "A22");
-//        Pawn aPawn23 = new Pawn(this.Player2 , "A23");
-//        Pawn aPawn24 = new Pawn(this.Player2 , "A24");
-//        Pawn aPawn25 = new Pawn(this.Player2 , "A25");
-//        Pawn dPawn1 = new Pawn(this.Player1 , "D1");
-//        Pawn dPawn2 = new Pawn(this.Player1 , "D2");
-//        Pawn dPawn3 = new Pawn(this.Player1 , "D3");
-//        Pawn dPawn4 = new Pawn(this.Player1 , "D4");
-//        Pawn dPawn5 = new Pawn(this.Player1 , "D5");
-//        Pawn dPawn6 = new Pawn(this.Player1 , "D6");
-//        Pawn dPawn7 = new Pawn(this.Player1 , "D7");
-//        Pawn dPawn8 = new Pawn(this.Player1 , "D8");
-//        Pawn dPawn9 = new Pawn(this.Player1 , "D9");
-//        Pawn dPawn10 = new Pawn(this.Player1 , "D10");
-//        Pawn dPawn11 = new Pawn(this.Player1 , "D11");
-//        Pawn dPawn12 = new Pawn(this.Player1 , "D12");
         King dKing = new King(this.Player1, "K");
 
 
@@ -341,7 +307,7 @@ public class GameLogic implements PlayableLogic {
 
     }
 
-    public static void logWhenEnd() {
+    public static void pathIterator() {
         ArrayList<ArrayList<Position>> pieceOnBoard = new ArrayList<ArrayList<Position>>();
 
         for (int i = 0; i < 11; i++) {
@@ -349,16 +315,23 @@ public class GameLogic implements PlayableLogic {
                 if (GameBoard[i][j] != null) {
                     pieceOnBoard.add(GameBoard[i][j].hasBeen);
                     Iterator<Position> tempIter = GameBoard[i][j].hasBeen.iterator();
-                    System.out.println(GameBoard[i][j].name + ": " + GameBoard[i][j].hasBeen + "\n");
                 }
             }
         }
         pieceOnBoard.sort(Comparator.comparingInt(ArrayList<Position>::size));
         for (int i = 0; i < pieceOnBoard.size(); i++) {
-            System.out.println(pieceOnBoard.get(i));
-        }
+            int x = pieceOnBoard.get(i).getLast().getX();
+            int y = pieceOnBoard.get(i).getLast().getY();
+            System.out.println(GameBoard[x][y].name + ": " + pieceOnBoard.get(i));
 
-//        Iterator<Position> moved = GameBoard[3][0].hasBeen.iterator();
+        }
+        for (int i = 0; i < pieceOnBoard.size(); i++) {
+            int x = pieceOnBoard.get(i).getLast().getX();
+            int y = pieceOnBoard.get(i).getLast().getY();
+            System.out.println(GameBoard[x][y].name + ": " + pieceOnBoard.get(i).size() + " squares");
+
+
+        }
     }
 }
 
