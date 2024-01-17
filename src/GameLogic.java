@@ -31,6 +31,10 @@ public class GameLogic implements PlayableLogic {
             return false; // if turn = false its Player2 turn same vice versa
         }
 
+        if (!isPathClear(a, b)) {
+            return false;
+        }
+
         int aX = a.getX(), aY = a.getY(), bX = b.getX(), bY = b.getY();
         boolean currentPieceIsKing = isKing(a);
 
@@ -38,10 +42,7 @@ public class GameLogic implements PlayableLogic {
                 (bX == 10 && bY == 10)) && (!currentPieceIsKing)) {
             return false;
         }
-
-        if (!isPathClear(a, b)) {
-            return false;
-        }
+        
         GameBoard[aX][aY].hasBeen.add(b);
         GameBoard[bX][bY] = GameBoard[aX][aY];
         GameBoard[aX][aY] = null;
