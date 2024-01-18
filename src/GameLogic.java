@@ -362,18 +362,31 @@ public class GameLogic implements PlayableLogic {
                 }
             }
         }
-        pieceOnBoard.sort(Comparator.comparingInt(ArrayList<Position>::size));
-        for (int i = 0; i < pieceOnBoard.size(); i++) {
-            int x = pieceOnBoard.get(i).getLast().getX();
-            int y = pieceOnBoard.get(i).getLast().getY();
-            System.out.println(GameBoard[x][y].name + ": " + pieceOnBoard.get(i));
 
-        }
+//        pieceOnBoard.sort(Comparator.comparingInt(ArrayList<Position>::size));
+//        for (int i = 0; i < pieceOnBoard.size(); i++) {
+//            int x = pieceOnBoard.get(i).getLast().getX();
+//            int y = pieceOnBoard.get(i).getLast().getY();
+//            System.out.println(GameBoard[x][y].name + ": " + pieceOnBoard.get(i));
+//
+//        }
 //        for (int i = 0; i < pieceOnBoard.size(); i++) {
 //            int x = pieceOnBoard.get(i).getLast().getX();
 //            int y = pieceOnBoard.get(i).getLast().getY();
 //            System.out.println(GameBoard[x][y].name + ": " + pieceOnBoard.get(i).size() + " squares");
 //        }
+//        pieceOnBoard.sort(travelDistanceComp); // --------------------------------------------- Continue with sort comparator
     }
+
+
+//    Comparator<ConcretePiece> hasWon = new Comparator<ConcretePiece>() {
+//        @Override
+//        public int comapre(ConcretePiece p1, ConcretePiece p2) {
+//            return Integer.compare(p1.getOwner().iWon, p2.getOwner().iWon);
+//            return 0;
+//        }
+//    };
 }
+
+
 
