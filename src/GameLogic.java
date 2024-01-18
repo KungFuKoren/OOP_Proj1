@@ -46,7 +46,9 @@ public class GameLogic implements PlayableLogic {
         GameBoard[aX][aY].hasBeen.add(b);
         GameBoard[bX][bY] = GameBoard[aX][aY];
         GameBoard[aX][aY] = null;
+
         if (!isKing(b)) checkKill(b);
+
         this.Turn = !this.Turn;
         Position[] posArr = new Position[2];
         posArr[0] = a;
@@ -98,50 +100,52 @@ public class GameLogic implements PlayableLogic {
             ConcretePiece neighbour = (ConcretePiece) getPieceAtPosition(neighbourPos);
             if (neighbour == null) continue;
             boolean currentIsP1 = this.getPieceAtPosition(neighbourPos).getOwner().isPlayerOne();
-            if ((currentIsP1 && !Turn) || (!currentIsP1 && Turn)) {
-                if (isKing(neighbourPos)) { // if neighbour is King check if eaten
-                    if (Turn) continue;
-                    ArrayList<Position> kingNeighbours = getNeighbours(neighbourPos);
-                    int numOfEnemies = 0;
-                    for (int j = 0; j < kingNeighbours.size(); j++) {
-                        if (getPieceAtPosition(kingNeighbours.get(j)) == null) continue;
-                        boolean kingNeighbourIsP1 = getPieceAtPosition(kingNeighbours.get(j)).getOwner().isPlayerOne();
-                        if (!kingNeighbourIsP1) numOfEnemies++;
+
+            if ((currentIsP1 && Turn) || (!currentIsP1 && !Turn)) continue;
+
+            if (isKing(neighbourPos)) { // if neighbour is King check if eaten
+                if (Turn) continue;
+                ArrayList<Position> kingNeighbours = getNeighbours(neighbourPos);
+                int numOfEnemies = 0;
+                for (int j = 0; j < kingNeighbours.size(); j++) {
+                    if (getPieceAtPosition(kingNeighbours.get(j)) == null) continue;
+                    boolean kingNeighbourIsP1 = getPieceAtPosition(kingNeighbours.get(j)).getOwner().isPlayerOne();
+                    if (!kingNeighbourIsP1) numOfEnemies++;
+                }
+                for (int j = 0; j < kingNeighbours.size(); j++) {
+                    System.out.println(kingNeighbours.get(j));
+                }
+                System.out.println("King neighbours = " + kingNeighbours.size());
+                if (numOfEnemies == kingNeighbours.size()) KingDead = true;
+            } else {
+                boolean currentPIsP1 = getPieceAtPosition(a).getOwner().isPlayerOne();
+                if (neighbourPos.getX() == aX - 1 && neighbourPos.getY() == aY) {
+                    if (aX - 2 < 0 || (aX - 2 == 0 && aY == 0) || (aX - 2 == 0 && aY == 10) ||
+                            (GameBoard[aX - 2][aY] != null && GameBoard[aX - 2][aY].getOwner().isPlayerOne() == currentPIsP1 &&
+                                    !isKing(new Position(aX - 2, aY)))) {
+                        kill(a, neighbourPos);
                     }
-                    for (int j = 0; j < kingNeighbours.size(); j++) {
-                        System.out.println(kingNeighbours.get(j));
+                } else if (neighbourPos.getX() == aX + 1 && neighbourPos.getY() == aY) {
+                    if (aX + 2 > 10 || (aX + 2 == 10 && aY == 0) || (aX + 2 == 10 && aY == 10) ||
+                            (GameBoard[aX + 2][aY] != null && GameBoard[aX + 2][aY].getOwner().isPlayerOne() == currentPIsP1 &&
+                                    !isKing(new Position(aX + 2, aY)))) {
+                        kill(a, neighbourPos);
                     }
-                    System.out.println("King neighbours = " + kingNeighbours.size());
-                    if (numOfEnemies == kingNeighbours.size()) KingDead = true;
-                } else {
-                    boolean currentPIsP1 = getPieceAtPosition(a).getOwner().isPlayerOne();
-                    if (neighbourPos.getX() == aX - 1 && neighbourPos.getY() == aY) {
-                        if (aX - 2 < 0 || (aX - 2 == 0 && aY == 0) || (aX - 2 == 0 && aY == 10) ||
-                                (GameBoard[aX - 2][aY] != null && GameBoard[aX - 2][aY].getOwner().isPlayerOne() == currentPIsP1 &&
-                                        !isKing(new Position(aX - 2, aY)))) {
-                            kill(a, neighbourPos);
-                        }
-                    } else if (neighbourPos.getX() == aX + 1 && neighbourPos.getY() == aY) {
-                        if (aX + 2 > 10 || (aX + 2 == 10 && aY == 0) || (aX + 2 == 10 && aY == 10) ||
-                                (GameBoard[aX + 2][aY] != null && GameBoard[aX + 2][aY].getOwner().isPlayerOne() == currentPIsP1 &&
-                                        !isKing(new Position(aX + 2, aY)))) {
-                            kill(a, neighbourPos);
-                        }
-                    } else if (neighbourPos.getY() == aY - 1 && neighbourPos.getX() == aX) {
-                        if (aY - 2 < 0 || (aX == 0 && aY - 2 == 0) || (aX == 10 && aY - 2 == 0) ||
-                                (GameBoard[aX][aY - 2] != null && GameBoard[aX][aY - 2].getOwner().isPlayerOne() == currentPIsP1 &&
-                                        !isKing(new Position(aX, aY - 2)))) {
-                            kill(a, neighbourPos);
-                        }
-                    } else if (neighbourPos.getY() == aY + 1 && neighbourPos.getX() == aX) {
-                        if (aY + 2 > 10 || (aX == 0 && aY + 2 == 10) || (aX == 10 && aY + 2 == 10) ||
-                                (GameBoard[aX][aY + 2] != null && GameBoard[aX][aY + 2].getOwner().isPlayerOne() == currentPIsP1 &&
-                                        !isKing(new Position(aX, aY + 2)))) {
-                            kill(a, neighbourPos);
-                        }
+                } else if (neighbourPos.getY() == aY - 1 && neighbourPos.getX() == aX) {
+                    if (aY - 2 < 0 || (aX == 0 && aY - 2 == 0) || (aX == 10 && aY - 2 == 0) ||
+                            (GameBoard[aX][aY - 2] != null && GameBoard[aX][aY - 2].getOwner().isPlayerOne() == currentPIsP1 &&
+                                    !isKing(new Position(aX, aY - 2)))) {
+                        kill(a, neighbourPos);
+                    }
+                } else if (neighbourPos.getY() == aY + 1 && neighbourPos.getX() == aX) {
+                    if (aY + 2 > 10 || (aX == 0 && aY + 2 == 10) || (aX == 10 && aY + 2 == 10) ||
+                            (GameBoard[aX][aY + 2] != null && GameBoard[aX][aY + 2].getOwner().isPlayerOne() == currentPIsP1 &&
+                                    !isKing(new Position(aX, aY + 2)))) {
+                        kill(a, neighbourPos);
                     }
                 }
             }
+
         }
     }
 
