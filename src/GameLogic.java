@@ -9,7 +9,8 @@ public class GameLogic implements PlayableLogic {
     public boolean KingDead = false;
     public Stack<Position[]> gamePlay;
 
-    public ConcretePiece[] allPieces;
+    public ArrayList<Pawn> allPawns;
+    public ArrayList<ConcretePiece> allPieces;
 
 
     ConcretePiece[][] resetBoard = new ConcretePiece[11][11];
@@ -19,6 +20,7 @@ public class GameLogic implements PlayableLogic {
         this.Player1 = new ConcretePlayer(true);
         this.Player2 = new ConcretePlayer(false);
         reset();
+        System.out.println("ASDASDASDASDSA" + allPieces.size());
     }
 
     @Override
@@ -285,19 +287,31 @@ public class GameLogic implements PlayableLogic {
     }
 
     public void setBoard() {
+
+        ArrayList<Pawn> allPawns = new ArrayList<>();
+        ArrayList<ConcretePiece> allPieces = new ArrayList<>();
+
         ConcretePiece[][] Board = new ConcretePiece[11][11];
         Pawn[] aPawn = new Pawn[25];
         Pawn[] dPawn = new Pawn[12];
 
         for (int i = 0; i < 25; i++) {
-            aPawn[i] = new Pawn(this.Player2, "A" + (i + 1));
+            aPawn[i] = new Pawn(this.Player2, (i + 1));
+            allPawns.add(aPawn[i]);
+            allPieces.add(aPawn[i]);
+
         }
         for (int i = 0; i < 12; i++) {
-
-            dPawn[i] = new Pawn(this.Player1, "D" + (i + 1));
+            dPawn[i] = new Pawn(this.Player1, (i + 1));
+            allPawns.add(dPawn[i]);
+            allPieces.add(aPawn[i]);
         }
+        this.allPawns = allPawns;
+
         King dKing = new King(this.Player1, "K");
 
+        allPieces.add(dKing);
+        this.allPieces = allPieces;
 
         Board[3][0] = aPawn[0];
         Board[4][0] = aPawn[1];
@@ -338,6 +352,8 @@ public class GameLogic implements PlayableLogic {
         Board[6][6] = dPawn[10];
         Board[5][7] = dPawn[11];
         Board[5][5] = dKing;
+
+
         GameBoard = Board;
 
         for (int i = 0; i < 11; i++) {
@@ -351,42 +367,29 @@ public class GameLogic implements PlayableLogic {
 
     }
 
-    public static void pathIterator() {
-        ArrayList<ArrayList<Position>> pieceOnBoard = new ArrayList<ArrayList<Position>>();
+    public void pathIterator() {
+        ArrayList<ConcretePiece> pieceOnBoard = new ArrayList<>();
 
         for (int i = 0; i < 11; i++) {
             for (int j = 0; j < 11; j++) {
                 if (GameBoard[i][j] != null) {
-                    pieceOnBoard.add(GameBoard[i][j].hasBeen);
-                    Iterator<Position> tempIter = GameBoard[i][j].hasBeen.iterator();
+                    pieceOnBoard.add(GameBoard[i][j]);
                 }
             }
         }
 
-//        pieceOnBoard.sort(Comparator.comparingInt(ArrayList<Position>::size));
-//        for (int i = 0; i < pieceOnBoard.size(); i++) {
-//            int x = pieceOnBoard.get(i).getLast().getX();
-//            int y = pieceOnBoard.get(i).getLast().getY();
-//            System.out.println(GameBoard[x][y].name + ": " + pieceOnBoard.get(i));
-//
-//        }
-//        for (int i = 0; i < pieceOnBoard.size(); i++) {
-//            int x = pieceOnBoard.get(i).getLast().getX();
-//            int y = pieceOnBoard.get(i).getLast().getY();
-//            System.out.println(GameBoard[x][y].name + ": " + pieceOnBoard.get(i).size() + " squares");
-//        }
-//        pieceOnBoard.sort(travelDistanceComp); // --------------------------------------------- Continue with sort comparator
+        Collections.sort(pieceOnBoard, new PathComparator());
+        for (ConcretePiece piece : pieceOnBoard) {
+            System.out.println(piece.getName() + ": " + piece.getPositions());
+        }
+
+        System.out.println("***************************************************************************");
+
+        Collections.sort(allPawns, new KillComparator().reversed());
+        for (Pawn pawn : this.allPawns) {
+            System.out.println(pawn.getName() + ": " + pawn.getPiecesAte());
+        }
+        System.out.println("***************************************************************************");
     }
-
-
-//    Comparator<ConcretePiece> hasWon = new Comparator<ConcretePiece>() {
-//        @Override
-//        public int comapre(ConcretePiece p1, ConcretePiece p2) {
-//            return Integer.compare(p1.getOwner().iWon, p2.getOwner().iWon);
-//            return 0;
-//        }
-//    };
 }
-
-
 
