@@ -9,6 +9,7 @@ public abstract class ConcretePiece implements Piece {
     public final int ID;
 
     public ArrayList<Position> hasBeen = new ArrayList<>();
+    public int distance = 0;
 
     public ConcretePiece(ConcretePlayer owner, String type, int id) {
         this.owner = owner;
@@ -42,5 +43,26 @@ public abstract class ConcretePiece implements Piece {
 
     public int getID() {
         return this.ID;
+    }
+
+    public void calcSquaresMoved() {
+        int dist = 0;
+        if (hasBeen.size() == 1) return;
+        else {
+            for (int i = 0; i < hasBeen.size() - 1; i++) {
+                int xA = hasBeen.get(i).getX();
+                int yA = hasBeen.get(i).getY();
+                int xB = hasBeen.get(i + 1).getX();
+                int yB = hasBeen.get(i + 1).getY();
+                if (xA == xB && yA != yB) {
+                    dist += Math.abs(yA - yB);
+                } else dist += Math.abs(xA - xB);
+            }
+        }
+        this.distance = dist;
+    }
+
+    public int getSquaresMoved() {
+        return distance;
     }
 }

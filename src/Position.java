@@ -1,6 +1,10 @@
+import java.util.LinkedList;
+
 public class Position {
     public int x;
     public int y;
+
+    public LinkedList<ConcretePiece> piecesLanded = new LinkedList<>();
 
     public static final int boardSize = 11;
 
@@ -17,10 +21,11 @@ public class Position {
     }
 
 
-   @Override
-   public String toString(){
-        return String.format("(%s,%s)",x,y);
-   }
+    @Override
+    public String toString() {
+        return String.format("(%s,%s)", x, y);
+    }
+
     public int getX() {
         return x;
     }
@@ -28,6 +33,12 @@ public class Position {
     public int getY() {
 
         return y;
+    }
+    public void addPawn(ConcretePiece cp){
+        if(piecesLanded.contains(cp)){
+            return;
+        }
+        piecesLanded.add(cp);
     }
 
 

@@ -218,7 +218,7 @@ public class GameLogic implements PlayableLogic {
         if (KingDead) {
             this.Player2.numOfWins++;
             this.Player2.iWon = true;
-            pathIterator();
+            allComp();
             reset();
             return true;
         }
@@ -232,7 +232,7 @@ public class GameLogic implements PlayableLogic {
                 (getPieceAtPosition(pos4) != null && isKing(pos4))) {
             this.Player1.numOfWins++;
             this.Player1.iWon = true;
-            pathIterator();
+            allComp();
             reset();
             return true;
         }
@@ -367,7 +367,12 @@ public class GameLogic implements PlayableLogic {
 
     }
 
-    public void pathIterator() {
+    public void allComp() {
+
+        for (ConcretePiece cp : allPieces) {
+            cp.calcSquaresMoved();
+        }
+
         ArrayList<ConcretePiece> pieceOnBoard = new ArrayList<>();
 
         for (int i = 0; i < 11; i++) {
@@ -378,18 +383,28 @@ public class GameLogic implements PlayableLogic {
             }
         }
 
-        Collections.sort(pieceOnBoard, new PathComparator());
+        pieceOnBoard.sort(new PathComparator());
         for (ConcretePiece piece : pieceOnBoard) {
             System.out.println(piece.getName() + ": " + piece.getPositions());
         }
 
         System.out.println("***************************************************************************");
 
-        Collections.sort(allPawns, new KillComparator().reversed());
+        allPawns.sort(new KillComparator().reversed());
         for (Pawn pawn : this.allPawns) {
             System.out.println(pawn.getName() + ": " + pawn.getPiecesAte());
         }
         System.out.println("***************************************************************************");
+
+        for (ConcretePiece piece : allPieces) {
+            piece.calcSquaresMoved();
+        }
+        allPieces.sort(new travelDistanceComp());
+        for (ConcretePiece piece : allPieces) {
+            System.out.println(piece.getName() + ": " + piece.getSquaresMoved());
+        }
+        System.out.println("***************************************************************************");
+
     }
 }
 
