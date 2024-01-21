@@ -3,8 +3,8 @@ import java.util.LinkedList;
 public class Position {
     public int x;
     public int y;
+    public int pieceVisited = 0;
 
-    public LinkedList<ConcretePiece> piecesLanded = new LinkedList<>();
 
     public static final int boardSize = 11;
 
@@ -34,17 +34,4 @@ public class Position {
 
         return y;
     }
-
-    public void addPawn(ConcretePiece cp) {
-        if (piecesLanded.contains(cp) || cp == null) {
-            return;
-        }
-        piecesLanded.add(cp);
-    }
-
-    public LinkedList<ConcretePiece> getPiecesLanded() {
-        return this.piecesLanded;
-    }
-
-
 }

@@ -2,7 +2,7 @@ import java.util.Comparator;
 
 public class PiecesAtPositionComparator implements Comparator<Position> {
     public int compare(Position pos1, Position pos2) {
-        int piecesLandedComp = -Integer.compare(pos1.getPiecesLanded().size(), pos2.getPiecesLanded().size());
+        int piecesLandedComp = -Integer.compare(pos1.pieceVisited, pos2.pieceVisited);
 
         if (piecesLandedComp == 0) {
             int xComp = Integer.compare(pos1.getX(), pos2.getX());

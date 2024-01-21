@@ -11,7 +11,10 @@ public class GameLogic implements PlayableLogic {
 
     public ArrayList<Pawn> allPawns;
     public ArrayList<ConcretePiece> allPieces;
-    
+
+    public HashMap<String, HashSet<ConcretePiece>> posMap;
+    public ArrayList<Position> posArr;
+
 
     public GameLogic() {
         this.Player1 = new ConcretePlayer(true);
@@ -45,7 +48,21 @@ public class GameLogic implements PlayableLogic {
         GameBoard[bX][bY] = GameBoard[aX][aY];
         GameBoard[aX][aY] = null;
 
-        b.addPawn(GameBoard[bX][bY]);
+        posMap.get((bX + "," + bY)).add(GameBoard[bX][bY]);
+        posArr.get((bX * 11) + bY).pieceVisited = posMap.get((bX + "," + bY)).size();
+//        for (Map.Entry<String, HashSet<ConcretePiece>> entry : posMap.entrySet()) {
+//            String key = entry.getKey();
+//            HashSet<ConcretePiece> values = entry.getValue();
+//
+//            System.out.println("Key: " + key);
+//            System.out.println("Values:");
+//
+//            for (ConcretePiece value : values) {
+//                System.out.println("  - " + value);
+//            }
+//            System.out.println();
+//        }
+//        System.out.println(posMap.get("3,10").size());
 
         if (!isKing(b)) checkKill(b);
 
@@ -241,6 +258,8 @@ public class GameLogic implements PlayableLogic {
 
     @Override
     public void reset() {
+        this.posMap = new HashMap<>();
+        this.posArr = new ArrayList<>();
         setBoard();
         Stack<Position[]> newGame = new Stack<Position[]>();
         this.gamePlay = newGame;
@@ -354,13 +373,17 @@ public class GameLogic implements PlayableLogic {
 
         for (int i = 0; i < 11; i++) {
             for (int j = 0; j < 11; j++) {
+                posMap.put((i + "," + j), new HashSet<>());
+                Position currPos = new Position(i, j);
+                posArr.add(currPos);
                 if (GameBoard[i][j] != null) {
                     Position arrPos = new Position(i, j);
                     GameBoard[i][j].hasBeen.add(arrPos);
+                    posMap.get((i + "," + j)).add(GameBoard[i][j]);
+                    currPos.pieceVisited = posMap.get((i + "," + j)).size();
                 }
             }
         }
-
     }
 
     public void allComp() {
@@ -388,7 +411,7 @@ public class GameLogic implements PlayableLogic {
 
         allPawns.sort(new KillComparator().reversed());
         for (Pawn pawn : this.allPawns) {
-            System.out.println(pawn.getName() + ": " + pawn.getPiecesAte());
+            System.out.println(pawn.getName() + ": " + pawn.getPiecesAte()+" kills");
         }
         System.out.println("***************************************************************************");
 
@@ -399,11 +422,16 @@ public class GameLogic implements PlayableLogic {
         for (ConcretePiece piece : allPieces) {
             int squaresMoved = piece.getSquaresMoved();
             if (squaresMoved != 0)
-                System.out.println(piece.getName() + ": " + squaresMoved);
+                System.out.println(piece.getName() + ": " + squaresMoved+" squares");
         }
         System.out.println("***************************************************************************");
 
-//        allPieces.sort(new PiecesAtPositionComparator());
+        posArr.sort(new PiecesAtPositionComparator());
+        for (Position currPos : posArr) {
+            if (currPos.pieceVisited != 0) {
+                System.out.println("(" + currPos.getX() + "," + currPos.getY() + ")" + currPos.pieceVisited + " pieces");
+            }
+        }
     }
 }
 
