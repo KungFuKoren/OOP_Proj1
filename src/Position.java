@@ -34,11 +34,16 @@ public class Position {
 
         return y;
     }
-    public void addPawn(ConcretePiece cp){
-        if(piecesLanded.contains(cp)){
+
+    public void addPawn(ConcretePiece cp) {
+        if (piecesLanded.contains(cp) || cp == null) {
             return;
         }
         piecesLanded.add(cp);
+    }
+
+    public LinkedList<ConcretePiece> getPiecesLanded() {
+        return this.piecesLanded;
     }
 
 

@@ -11,10 +11,7 @@ public class GameLogic implements PlayableLogic {
 
     public ArrayList<Pawn> allPawns;
     public ArrayList<ConcretePiece> allPieces;
-
-
-    ConcretePiece[][] resetBoard = new ConcretePiece[11][11];
-
+    
 
     public GameLogic() {
         this.Player1 = new ConcretePlayer(true);
@@ -47,6 +44,8 @@ public class GameLogic implements PlayableLogic {
         GameBoard[aX][aY].hasBeen.add(b);
         GameBoard[bX][bY] = GameBoard[aX][aY];
         GameBoard[aX][aY] = null;
+
+        b.addPawn(GameBoard[bX][bY]);
 
         if (!isKing(b)) checkKill(b);
 
@@ -404,6 +403,7 @@ public class GameLogic implements PlayableLogic {
         }
         System.out.println("***************************************************************************");
 
+//        allPieces.sort(new PiecesAtPositionComparator());
     }
 }
 
