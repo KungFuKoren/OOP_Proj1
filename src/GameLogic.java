@@ -20,7 +20,6 @@ public class GameLogic implements PlayableLogic {
         this.Player1 = new ConcretePlayer(true);
         this.Player2 = new ConcretePlayer(false);
         reset();
-        System.out.println("ASDASDASDASDSA" + allPieces.size());
     }
 
     @Override
@@ -114,10 +113,7 @@ public class GameLogic implements PlayableLogic {
                     boolean kingNeighbourIsP1 = getPieceAtPosition(kingNeighbours.get(j)).getOwner().isPlayerOne();
                     if (!kingNeighbourIsP1) numOfEnemies++;
                 }
-                for (int j = 0; j < kingNeighbours.size(); j++) {
-                    System.out.println(kingNeighbours.get(j));
-                }
-                System.out.println("King neighbours = " + kingNeighbours.size());
+
                 if (numOfEnemies == kingNeighbours.size()) KingDead = true;
             } else {
                 boolean currentPIsP1 = getPieceAtPosition(a).getOwner().isPlayerOne();
@@ -304,8 +300,9 @@ public class GameLogic implements PlayableLogic {
         for (int i = 0; i < 12; i++) {
             dPawn[i] = new Pawn(this.Player1, (i + 1));
             allPawns.add(dPawn[i]);
-            allPieces.add(aPawn[i]);
+            allPieces.add(dPawn[i]);
         }
+
         this.allPawns = allPawns;
 
         King dKing = new King(this.Player1, "K");
@@ -401,7 +398,9 @@ public class GameLogic implements PlayableLogic {
         }
         allPieces.sort(new travelDistanceComp());
         for (ConcretePiece piece : allPieces) {
-            System.out.println(piece.getName() + ": " + piece.getSquaresMoved());
+            int squaresMoved = piece.getSquaresMoved();
+            if (squaresMoved != 0)
+                System.out.println(piece.getName() + ": " + squaresMoved);
         }
         System.out.println("***************************************************************************");
 

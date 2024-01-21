@@ -19,7 +19,7 @@ public abstract class ConcretePiece implements Piece {
             this.name = "King";
             return;
         }
-        this.name = (this.owner.isPlayerOne() ? "D" : "A") + id;
+        this.name = (owner.isPlayerOne() ? "D" : "A") + id;
         this.ID = id;
     }
 
