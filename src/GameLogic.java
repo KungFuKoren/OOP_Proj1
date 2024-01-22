@@ -411,7 +411,7 @@ public class GameLogic implements PlayableLogic {
 
         allPawns.sort(new KillComparator().reversed());
         for (Pawn pawn : this.allPawns) {
-            System.out.println(pawn.getName() + ": " + pawn.getPiecesAte()+" kills");
+            System.out.println(pawn.getName() + ": " + pawn.getPiecesAte() + " kills");
         }
         System.out.println("***************************************************************************");
 
@@ -422,7 +422,7 @@ public class GameLogic implements PlayableLogic {
         for (ConcretePiece piece : allPieces) {
             int squaresMoved = piece.getSquaresMoved();
             if (squaresMoved != 0)
-                System.out.println(piece.getName() + ": " + squaresMoved+" squares");
+                System.out.println(piece.getName() + ": " + squaresMoved + " squares");
         }
         System.out.println("***************************************************************************");
 
