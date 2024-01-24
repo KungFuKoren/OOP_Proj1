@@ -23,7 +23,7 @@ public class GameLogic implements PlayableLogic {
     }
 
     @Override
-    public boolean move(Position a, Position b) {
+    public boolean move(Position a, Position b) { // check if piece can move, kill, win, and move
         if (this.getPieceAtPosition(a) == null || this.getPieceAtPosition(b) != null) {
             return false; // check if chosen square isn't empty and destination is clear
         }
@@ -61,7 +61,7 @@ public class GameLogic implements PlayableLogic {
         return true;
     }
 
-    private static boolean isPathClear(Position a, Position b) {
+    private static boolean isPathClear(Position a, Position b) { // check if path clear from a to b positions
         int aX = a.getX(), aY = a.getY(), bX = b.getX(), bY = b.getY();
         if ((a.getX() != b.getX() && a.getY() != b.getY()) || (a.getY() == b.getY() && a.getX() == b.getX())) {
             return false;
@@ -94,7 +94,7 @@ public class GameLogic implements PlayableLogic {
         return true;
     }
 
-    private void checkKill(Position a) {
+    private void checkKill(Position a) { // check if moved pawn or king can kill
         int aX = a.getX(), aY = a.getY();
         ArrayList<Position> neighbours = getNeighbours(a);
 
@@ -149,7 +149,7 @@ public class GameLogic implements PlayableLogic {
         }
     }
 
-    private ArrayList<Position> getNeighbours(Position a) {
+    private ArrayList<Position> getNeighbours(Position a) { // returns all 4/3 neighbours
         int aX = a.getX(), aY = a.getY();
         ArrayList<Position> neighbours = new ArrayList<>();
 
@@ -179,11 +179,11 @@ public class GameLogic implements PlayableLogic {
         return neighbours;
     }
 
-    private boolean isKing(Position a) {
+    private boolean isKing(Position a) { // returns true if given a position is a king
         return getPieceAtPosition(a).getType().equals("♔");
     }
 
-    private void kill(Position killerPos, Position victimPos) {
+    private void kill(Position killerPos, Position victimPos) { // kill using killer and victim
         Pawn killer = (Pawn) getPieceAtPosition(killerPos);
         killer.ateAPiece();
         GameBoard[victimPos.getX()][victimPos.getY()] = null;
@@ -192,26 +192,26 @@ public class GameLogic implements PlayableLogic {
     }
 
     @Override
-    public Piece getPieceAtPosition(Position position) {
+    public Piece getPieceAtPosition(Position position) { // return piece at given position
         return GameBoard[position.getX()][position.getY()];
     }
 
     @Override
-    public Player getFirstPlayer() {
+    public Player getFirstPlayer() { // returns p1
         if (Player2.isPlayerOne()) return Player2;
         else if (Player1.isPlayerOne()) return Player1;
         else throw new RuntimeException("Initialize player status again");
     }
 
     @Override
-    public Player getSecondPlayer() {
+    public Player getSecondPlayer() { // returns second player
         if (!Player2.isPlayerOne()) return Player2;
         else if (!Player1.isPlayerOne()) return Player1;
         else throw new RuntimeException("Initialize player status again");
     }
 
     @Override
-    public boolean isGameFinished() {
+    public boolean isGameFinished() { // check if game is finished and who won
         if (KingDead) {
             this.Player2.numOfWins++;
             this.Player2.iWon = true;
@@ -235,12 +235,12 @@ public class GameLogic implements PlayableLogic {
     }
 
     @Override
-    public boolean isSecondPlayerTurn() {
+    public boolean isSecondPlayerTurn() { // check if the turn of the attacker
         return !Turn;
     }
 
     @Override
-    public void reset() {
+    public void reset() { // reset board to starting position
         this.posMap = new HashMap<>();
         this.posArr = new ArrayList<>();
         setBoard();
@@ -253,7 +253,7 @@ public class GameLogic implements PlayableLogic {
     }
 
     @Override
-    public void undoLastMove() { // what if got eaten
+    public void undoLastMove() {
         if (this.gamePlay.empty()) return;
         boolean foundRotation = false;
         while (foundRotation) {
@@ -279,11 +279,11 @@ public class GameLogic implements PlayableLogic {
 
 
     @Override
-    public int getBoardSize() {
+    public int getBoardSize() { // returns the board size
         return 11;
     }
 
-    public void setBoard() {
+    public void setBoard() { // puts all pieces at starting position
 
         ArrayList<Pawn> allPawns = new ArrayList<>();
         ArrayList<ConcretePiece> allPieces = new ArrayList<>();
@@ -298,10 +298,17 @@ public class GameLogic implements PlayableLogic {
             allPieces.add(aPawn[i]);
 
         }
-        for (int i = 0; i < 12; i++) {
-            dPawn[i] = new Pawn(this.Player1, (i + 1));
-            allPawns.add(dPawn[i]);
-            allPieces.add(dPawn[i]);
+        for (int i = 0; i < 13; i++) {
+            if (i == 7) continue;
+            if (i < 7) {
+                dPawn[i] = new Pawn(this.Player1, (i + 1));
+                allPawns.add(dPawn[i]);
+                allPieces.add(dPawn[i]);
+            } else {
+                dPawn[i - 1] = new Pawn(this.Player1, (i + 1));
+                allPawns.add(dPawn[i - 1]);
+                allPieces.add(dPawn[i - 1]);
+            }
         }
 
         this.allPawns = allPawns;
@@ -318,24 +325,23 @@ public class GameLogic implements PlayableLogic {
         Board[7][0] = aPawn[4];
         Board[5][1] = aPawn[5];
         Board[0][3] = aPawn[6];
-        Board[0][4] = aPawn[7];
-        Board[0][5] = aPawn[8];
-        Board[0][6] = aPawn[9];
-        Board[0][7] = aPawn[10];
+        Board[10][3] = aPawn[7];
+        Board[0][4] = aPawn[8];
+        Board[10][4] = aPawn[9];
+        Board[0][5] = aPawn[10];
         Board[1][5] = aPawn[11];
         Board[9][5] = aPawn[12];
-        Board[10][3] = aPawn[13];
-        Board[10][4] = aPawn[14];
-        Board[10][5] = aPawn[15];
-        Board[10][6] = aPawn[16];
+        Board[10][5] = aPawn[13];
+        Board[0][6] = aPawn[14];
+        Board[10][6] = aPawn[15];
+        Board[0][7] = aPawn[16];
         Board[10][7] = aPawn[17];
-        Board[3][10] = aPawn[18];
-        Board[4][10] = aPawn[19];
-        Board[5][10] = aPawn[20];
-        Board[6][10] = aPawn[21];
-        Board[7][10] = aPawn[22];
-        Board[7][0] = aPawn[23];
-        Board[5][9] = aPawn[24];
+        Board[5][9] = aPawn[18];
+        Board[3][10] = aPawn[19];
+        Board[4][10] = aPawn[20];
+        Board[5][10] = aPawn[21];
+        Board[6][10] = aPawn[22];
+        Board[7][10] = aPawn[23];
 
         Board[5][3] = dPawn[0];
         Board[4][4] = dPawn[1];
@@ -369,7 +375,7 @@ public class GameLogic implements PlayableLogic {
         }
     }
 
-    public void allComp() {
+    public void allComp() { // when game finished print all comparators
 
         for (ConcretePiece cp : allPieces) {
             cp.calcSquaresMoved();
@@ -414,7 +420,7 @@ public class GameLogic implements PlayableLogic {
         posArr.sort(new PiecesAtPositionComparator());
         for (Position currPos : posArr) {
             if (currPos.pieceVisited > 1) {
-                System.out.println("(" + currPos.getX() + "," + currPos.getY() + ")" + currPos.pieceVisited + " pieces");
+                System.out.println("(" + currPos.getX() + ", " + currPos.getY() + ")" + currPos.pieceVisited + " pieces");
             }
         }
         System.out.println("***************************************************************************");
